@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOOD Workspace - Direction Phase (Edit Statement State)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&amp;family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#b6d088",
+                        "on-error": "#ffffff",
+                        "surface-container": "#ffe9e1",
+                        "surface-dim": "#edd5cc",
+                        "surface-container-high": "#fce3da",
+                        "on-secondary-fixed-variant": "#0035be",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#f6ddd4",
+                        "on-tertiary-fixed-variant": "#394d14",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#e0c0b2",
+                        "tertiary-fixed": "#d2eca2",
+                        "secondary-fixed": "#dde1ff",
+                        "surface-container-highest": "#f6ddd4",
+                        "outline": "#8c7166",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "on-tertiary-fixed": "#131f00",
+                        "primary": "#9e3d00",
+                        "primary-container": "#c64f00",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#efefff",
+                        "on-primary-fixed": "#351000",
+                        "inverse-surface": "#3c2d27",
+                        "primary-fixed": "#ffdbcd",
+                        "on-background": "#251913",
+                        "on-surface": "#251913",
+                        "secondary": "#0040e0",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed-dim": "#ffb595",
+                        "on-secondary-fixed": "#001356",
+                        "surface-container-low": "#fff1ec",
+                        "secondary-fixed-dim": "#b8c3ff",
+                        "on-primary-container": "#fffbff",
+                        "inverse-on-surface": "#ffede7",
+                        "on-surface-variant": "#594238",
+                        "on-tertiary-container": "#faffe8",
+                        "surface-tint": "#a23f00",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#fff8f6",
+                        "tertiary": "#4d6328",
+                        "surface": "#fff8f6",
+                        "inverse-primary": "#ffb595",
+                        "secondary-container": "#2e5bff",
+                        "error": "#ba1a1a",
+                        "background": "#fff8f6",
+                        "tertiary-container": "#657c3e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "title-md": ["EB Garamond"],
+                        "body-lg": ["Manrope"],
+                        "display-xl": ["Bricolage Grotesque"],
+                        "headline-lg-mobile": ["EB Garamond"],
+                        "label-sm": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "headline-lg": ["EB Garamond"]
+                    },
+                    "fontSize": {
+                        "title-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.surface'); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .filled-icon { font-variation-settings: 'FILL' 1; }
+        
+        /* Tactical Studio Elements */
+        .tape-effect {
+            position: relative;
+        }
+        .tape-effect::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 40px;
+            height: 16px;
+            background-color: rgba(230, 220, 210, 0.8);
+            border: 1px solid theme('colors.outline-variant');
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+        
+        .bg-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+
+        /* Editing Focus */
+        .dimmed { opacity: 0.4; transition: opacity 0.3s ease; pointer-events: none; }
+        .editing-overlay {
+            position: fixed;
+            inset: 0;
+            background: theme('colors.surface-container-highest');
+            opacity: 0.3;
+            z-index: 40;
+            pointer-events: none;
+        }
+        .edit-focus {
+            position: relative;
+            z-index: 50;
+        }
+        
+        /* Cursor Animation */
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .cursor-blink { animation: blink 1s step-end infinite; }
+    </style>
+</head>
+<body class="bg-noise text-on-surface antialiased min-h-screen flex flex-col font-body-md overflow-x-hidden">
+<!-- Editing Overlay to dim background -->
+<div class="editing-overlay"></div>
+<!-- TopNavBar -->
+<nav class="fixed docked full-width top-0 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center w-full px-margin-desktop h-20">
+<div class="flex items-center gap-gutter">
+<a class="font-display-xl text-display-xl font-extrabold tracking-tighter text-primary" href="#">MOOD</a>
+<div class="hidden md:flex gap-4 ml-8">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="#">01 Explore</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">02 Direction</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="#">03 Refine</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="#">04 System</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors hidden md:block">Support</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors"><span class="material-symbols-outlined">settings</span></button>
+<img alt="User avatar" class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A small circular avatar showing a professional yet creative headshot of a designer in a bright, modern studio setting with warm lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaUjKuU4ahKwbewIyKM94cL1ntIJJNCl060gLbHoyXcYkLBQL3j0MDgrSya5eiCCyfbQT2yacuqnHugkE1nljg2U5cZGsmxBXQsJkbt5vbTgfJULSdEywNcmpD9EwHeT3xrppxN8uAQco_G75UcFbrpGE1QztmgvqD6rO5uc4nEb5DEj-B9vKXOHxeFDU1ETBrjpEXQGCUbtoTQkxgWhRnlVOPxb3p0l9J68HHYZb4XsL9Kmx1eYFB"/>
+</div>
+</nav>
+<!-- Main Layout -->
+<div class="flex-1 flex pt-20 h-screen overflow-hidden">
+<!-- Main Creative Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-desktop relative">
+<header class="mb-12 max-w-4xl mx-auto text-center dimmed">
+<h2 class="font-title-md text-title-md text-on-surface-variant mb-2">Project Alpha / Phase 02</h2>
+<h1 class="font-display-xl text-display-xl text-primary">Direction Statement</h1>
+</header>
+<!-- EDITING FOCUS AREA -->
+<div class="max-w-3xl mx-auto mt-20 relative edit-focus">
+<!-- The Editing Input -->
+<div class="relative bg-surface-container-lowest p-12 rounded-xl border-2 border-primary/40 shadow-[0_8px_32px_-8px_rgba(158,61,0,0.15)] ring-4 ring-primary-container/10">
+<!-- Decorative Pin -->
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-surface-container-highest shadow-sm border border-outline flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="font-display-xl text-[72px] leading-tight font-extrabold tracking-tighter text-on-surface text-center">
+                        Bold. Ground<span class="relative inline-block">ed.<span class="absolute right-0 top-1/2 -translate-y-1/2 h-16 w-[3px] bg-primary cursor-blink ml-1"></span></span> Human.
+                    </div>
+<div class="mt-8 text-center font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto">
+                        This statement anchors the visual identity, ensuring every creative decision feels intentional, rugged, yet deeply personal.
+                    </div>
+<!-- AI Tooltip -->
+<div class="absolute top-[80%] left-[65%] bg-surface-container-lowest border border-outline-variant rounded-lg shadow-lg p-4 w-64 transform translate-x-4 translate-y-4">
+<div class="flex items-center gap-2 mb-3 border-b border-outline-variant/30 pb-2">
+<span class="material-symbols-outlined text-primary text-sm filled-icon">auto_awesome</span>
+<span class="font-label-sm text-label-sm text-primary uppercase">AI Suggestions</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<button class="px-3 py-1.5 bg-surface-container-high hover:bg-primary-container hover:text-on-primary-container rounded-full font-label-sm text-label-sm text-on-surface transition-colors border border-outline-variant/50">Authentic</button>
+<button class="px-3 py-1.5 bg-surface-container-high hover:bg-primary-container hover:text-on-primary-container rounded-full font-label-sm text-label-sm text-on-surface transition-colors border border-outline-variant/50">Rugged</button>
+<button class="px-3 py-1.5 bg-surface-container-high hover:bg-primary-container hover:text-on-primary-container rounded-full font-label-sm text-label-sm text-on-surface transition-colors border border-outline-variant/50">Tactile</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Dimmed Gallery Elements -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-32 max-w-6xl mx-auto dimmed">
+<div class="tape-effect bg-surface-container-lowest p-4 border border-outline-variant/30 shadow-sm rotate-1">
+<div class="bg-cover bg-center w-full aspect-square rounded-sm mb-4" data-alt="A moody, close-up photograph of rough, textured ceramic pottery in deep terracotta and earthy tones, showing the human touch in its uneven surface." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB3qJaVBacZT9DiHkK14wtH7mpOpkOKnONHFf7Lsa_B1rIRI6S6PoMUKo95J50LKZIsuqs-5LSG87kJsHUh3bslbrq86eo3xoTf2_zOkhkUNpuCVuZZEHYNSYSCWvtS20uHQ2crMXKKuMWnPzCAAtQTFVtNM20PaBSERP5LijcJ5xOnLZFi80Zy_-9PknK5pxdoPkPQ1NYxgl8zEZSlackf2UMmzBVVKhNjsCg2jsKazbpJHpaT7JL0')"></div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase text-center">Texture Ref.</p>
+</div>
+<div class="tape-effect bg-surface-container-lowest p-4 border border-outline-variant/30 shadow-sm -rotate-2 mt-8">
+<div class="bg-cover bg-center w-full aspect-square rounded-sm mb-4" data-alt="A striking editorial portrait of a person with expressive features, shot in high contrast black and white with dramatic side lighting to emphasize ruggedness." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAWUPTE38G7ohCfwBACRZ0fcN3OfIUpgwuXREFQ8qP9q00kj97BRjIpHBQxB908x_WM4HSfqnraM8qh4-KEiXYJK3tANHnZjJluUvyF23ZwD5-7NV25Yt4XYQs2neQS4Me_myX9Gow7c5yANtjZ-5BNHZw_IaLSXX-MT9Z68zGD_WJFcrzcSDdvUy_nPbMXZRJb2Cd5JQwJn5uHrV9Y98fyGXMLpmkMSrrJAVsNoqN5b2pHxVaW1Iyc')"></div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase text-center">Human Element</p>
+</div>
+<div class="bg-primary p-8 rounded-lg shadow-sm rotate-2 flex flex-col justify-center text-on-primary">
+<span class="font-title-md text-title-md mb-4 block">"It must feel like it was made by hands, not algorithms."</span>
+<span class="font-label-sm text-label-sm opacity-80">— Client Note</span>
+</div>
+</div>
+</main>
+<!-- SideNavBar (Right Side - Properties) -->
+<aside class="docked right-0 h-full w-80 border-l border-outline-variant/20 bg-surface-container-low flex flex-col py-unit px-4 gap-2 overflow-y-auto dimmed">
+<div class="p-4 border-b border-outline-variant/20 mb-4">
+<h3 class="font-title-md text-title-md text-primary mb-1">Properties</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Statement Identity</p>
+</div>
+<div class="px-2 mb-6">
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-3 flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">palette</span> Colors</h4>
+<div class="flex gap-2">
+<div class="w-8 h-8 rounded-full bg-primary border-2 border-surface shadow-sm cursor-pointer hover:scale-110 transition-transform"></div>
+<div class="w-8 h-8 rounded-full bg-surface-variant border-2 border-surface shadow-sm cursor-pointer hover:scale-110 transition-transform"></div>
+<div class="w-8 h-8 rounded-full bg-inverse-surface border-2 border-surface shadow-sm cursor-pointer hover:scale-110 transition-transform"></div>
+</div>
+</div>
+<div class="px-2 mb-6">
+<h4 class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-3 flex items-center gap-2"><span class="material-symbols-outlined text-[18px]">text_fields</span> Typography</h4>
+<div class="bg-surface p-3 border border-outline-variant/30 rounded flex items-center justify-between cursor-pointer hover:border-primary transition-colors">
+<span class="font-display-xl text-[16px] font-extrabold tracking-tighter">Bricolage</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">chevron_right</span>
+</div>
+<div class="bg-surface p-3 border border-outline-variant/30 rounded flex items-center justify-between cursor-pointer hover:border-primary transition-colors mt-2">
+<span class="font-title-md text-[16px]">EB Garamond</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">chevron_right</span>
+</div>
+</div>
+<div class="mt-auto p-4 border-t border-outline-variant/20">
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-sm text-label-sm py-3 rounded-lg transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">done</span> Save Direction
+                </button>
+</div>
+</aside>
+</div>
+</body></html>

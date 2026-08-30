@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOOD Studio - Explore</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;family=EB+Garamond:wght@500;600&amp;family=Manrope:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary": "#0040e0",
+                      "background": "#fff8f6",
+                      "error-container": "#ffdad6",
+                      "on-secondary": "#ffffff",
+                      "surface-container": "#ffe9e1",
+                      "on-error": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "outline-variant": "#e0c0b2",
+                      "on-primary-fixed-variant": "#7c2e00",
+                      "on-tertiary-fixed-variant": "#394d14",
+                      "secondary-fixed": "#dde1ff",
+                      "on-primary-container": "#fffbff",
+                      "surface": "#fff8f6",
+                      "tertiary-fixed-dim": "#b6d088",
+                      "on-primary-fixed": "#351000",
+                      "on-tertiary-fixed": "#131f00",
+                      "surface-container-highest": "#f6ddd4",
+                      "surface-variant": "#f6ddd4",
+                      "tertiary-fixed": "#d2eca2",
+                      "primary-fixed": "#ffdbcd",
+                      "on-background": "#251913",
+                      "on-surface": "#251913",
+                      "primary-container": "#c64f00",
+                      "on-error-container": "#93000a",
+                      "on-tertiary-container": "#faffe8",
+                      "surface-dim": "#edd5cc",
+                      "inverse-on-surface": "#ffede7",
+                      "inverse-primary": "#ffb595",
+                      "on-surface-variant": "#594238",
+                      "primary-fixed-dim": "#ffb595",
+                      "secondary-fixed-dim": "#b8c3ff",
+                      "tertiary-container": "#657c3e",
+                      "on-secondary-fixed-variant": "#0035be",
+                      "error": "#ba1a1a",
+                      "surface-container-high": "#fce3da",
+                      "outline": "#8c7166",
+                      "on-tertiary": "#ffffff",
+                      "primary": "#9e3d00",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-container": "#efefff",
+                      "inverse-surface": "#3c2d27",
+                      "surface-container-low": "#fff1ec",
+                      "tertiary": "#4d6328",
+                      "secondary-container": "#2e5bff",
+                      "surface-bright": "#fff8f6",
+                      "surface-tint": "#a23f00",
+                      "on-secondary-fixed": "#001356"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "container-max": "1440px",
+                      "margin-desktop": "40px",
+                      "gutter": "24px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "body-lg": [
+                              "Manrope"
+                      ],
+                      "headline-lg": [
+                              "EB Garamond"
+                      ],
+                      "title-md": [
+                              "EB Garamond"
+                      ],
+                      "body-md": [
+                              "Manrope"
+                      ],
+                      "headline-lg-mobile": [
+                              "EB Garamond"
+                      ],
+                      "display-xl": [
+                              "Bricolage Grotesque"
+                      ],
+                      "label-sm": [
+                              "Manrope"
+                      ]
+              },
+              "fontSize": {
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "title-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-xl": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.04em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .tape-effect {
+            box-shadow: 4px 4px 0px 0px rgba(140, 113, 102, 0.2);
+            border: 1px solid rgba(140, 113, 102, 0.4);
+        }
+        .pin {
+            width: 12px;
+            height: 12px;
+            background-color: #ba1a1a;
+            border-radius: 50%;
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .washi-tape {
+            position: absolute;
+            width: 60px;
+            height: 20px;
+            background-color: rgba(246, 221, 212, 0.7);
+            transform: rotate(-5deg);
+            top: -10px;
+            left: 50%;
+            margin-left: -30px;
+            border: 1px solid rgba(140, 113, 102, 0.1);
+        }
+        .handwritten {
+            font-family: 'Caveat', cursive; /* Using a placeholder cursive for the 'handwritten' feel */
+            color: #ba1a1a;
+        }
+        /* Custom scrollbar for canvas */
+        .canvas-scroll::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .canvas-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .canvas-scroll::-webkit-scrollbar-thumb {
+            background-color: rgba(140, 113, 102, 0.3);
+            border-radius: 4px;
+        }
+        .pattern-bg {
+            background-image: radial-gradient(rgba(140, 113, 102, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col overflow-hidden font-body-md">
+<!-- Top Navigation (TopAppBar) -->
+<header class="bg-surface/80 dark:bg-surface-container/80 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto h-20 shrink-0 z-50 fixed top-0 w-full">
+<!-- Logo -->
+<div class="flex items-center">
+<span class="text-display-xl font-display-xl text-primary-container dark:text-primary-fixed tracking-tight">MOOD</span>
+</div>
+<!-- Navigation Links (Workflow) -->
+<nav class="hidden md:flex items-center gap-8">
+<div class="flex items-center gap-2 group cursor-pointer text-primary dark:text-inverse-primary font-bold border-b-2 border-primary-container pb-1 transition-transform duration-200 scale-95">
+<span class="bg-primary-container text-on-primary-container text-label-sm font-label-sm rounded-full w-5 h-5 flex items-center justify-center">1</span>
+<span class="text-label-sm font-label-sm uppercase tracking-widest">Explore</span>
+</div>
+<div class="h-px w-8 bg-outline-variant/50"></div>
+<div class="flex items-center gap-2 group cursor-pointer text-on-surface-variant/70 dark:text-surface-variant/70 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
+<span class="bg-surface-variant text-on-surface-variant text-label-sm font-label-sm rounded-full w-5 h-5 flex items-center justify-center">2</span>
+<span class="text-label-sm font-label-sm uppercase tracking-widest">Direction</span>
+</div>
+<div class="h-px w-8 bg-outline-variant/50"></div>
+<div class="flex items-center gap-2 group cursor-pointer text-on-surface-variant/70 dark:text-surface-variant/70 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
+<span class="bg-surface-variant text-on-surface-variant text-label-sm font-label-sm rounded-full w-5 h-5 flex items-center justify-center">3</span>
+<span class="text-label-sm font-label-sm uppercase tracking-widest">Refine</span>
+</div>
+<div class="h-px w-8 bg-outline-variant/50"></div>
+<div class="flex items-center gap-2 group cursor-pointer text-on-surface-variant/70 dark:text-surface-variant/70 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors">
+<span class="bg-surface-variant text-on-surface-variant text-label-sm font-label-sm rounded-full w-5 h-5 flex items-center justify-center">4</span>
+<span class="text-label-sm font-label-sm uppercase tracking-widest">System</span>
+</div>
+</nav>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">auto_awesome</span>
+</button>
+<button class="bg-tertiary text-on-tertiary px-6 py-2 rounded-full font-label-sm text-label-sm hover:opacity-90 transition-opacity">
+                Start Project
+            </button>
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A close up portrait of a young professional creative woman with dark hair in a bright studio environment, warm natural lighting, modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrsABjU1rbPShAJtI3CRUn5RbgSrkHYbeQSofdbEOOoJBLg3H0Sz4Gx6I3v4C8vLFO7rTVU6SItDbSialo0feX7PuVLpVYUuKKOJKrT3fCGGxX9nIa1C3_pwpDIrfCYshAmrea_Qw-bm9MU88D2bJXsox0WH0xHijOX19mrMnXI11ZsGfu1_0rKdJtosL8iWCLxbRrM6LEGnizB4jdvVpR69jCF9HRdewfq5XHRrwqT0y-82u6-VwB"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-20 h-screen overflow-hidden">
+<!-- Side Navigation -->
+<aside class="bg-surface-container-low dark:bg-surface-dim h-full w-64 border-r border-outline-variant/20 flex flex-col p-4 gap-4 shrink-0 z-40 hidden md:flex">
+<!-- Project Header -->
+<div class="flex items-center gap-3 p-2 mb-4 border-b border-outline-variant/20 pb-6">
+<div class="w-12 h-12 rounded-lg overflow-hidden tape-effect shrink-0">
+<img alt="Project Thumbnail" class="w-full h-full object-cover" data-alt="Minimalist architecture interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAy0DqYlulvwS8BOn2TrIJV8hxOK8uVOFoSOcNwgIO_Jmmgx9w-detRDDoW66SwnOdkRPTzspm-8FZSNOj6rDy3OTCcJkY_PJ53CUTmR_9mf8qI703GKAw9va8V_nw245-h1pOUkO7hU7U55tpTQM75XhvN-gysho3LxY4d2Eb017pQV-Qt2IKzia7lnTRB8nOiGTbH7t5kXGlL52v9jjFHm2imf1goGIi9AzIoyhHEVuNFZfrvglYs"/>
+</div>
+<div>
+<h2 class="text-title-md font-title-md text-primary truncate">Hygge Home</h2>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Nordic Architecture</p>
+</div>
+</div>
+<!-- Nav Links -->
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-fixed text-on-primary-fixed-variant font-bold rounded-xl scale-[0.98] transition-all" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-label-sm font-label-sm uppercase tracking-widest">Explore</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 hover:bg-surface-container-high rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="text-label-sm font-label-sm uppercase tracking-widest">References</span>
+<span class="ml-auto text-[10px] bg-surface-variant px-2 py-0.5 rounded-full">32</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 hover:bg-surface-container-high rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-label-sm font-label-sm uppercase tracking-widest">Notes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 hover:bg-surface-container-high rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">palette</span>
+<span class="text-label-sm font-label-sm uppercase tracking-widest">Colors</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 hover:bg-surface-container-high rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">text_fields</span>
+<span class="text-label-sm font-label-sm uppercase tracking-widest">Type</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant/50 hover:bg-surface-container-high rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">category</span>
+<span class="text-label-sm font-label-sm uppercase tracking-widest">Assets</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-outline-variant/20">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-label-sm font-label-sm">Avery Woods</span>
+</a>
+</div>
+</aside>
+<!-- Main Workspace (Canvas) -->
+<main class="flex-1 overflow-auto canvas-scroll pattern-bg bg-background p-8">
+<div class="max-w-7xl mx-auto flex flex-col xl:flex-row gap-8">
+<!-- Left Content: Observation and Masonry Grid -->
+<div class="flex-1">
+<!-- AI Observation Sticky Note -->
+<div class="w-80 bg-surface-container-highest p-6 tape-effect rotate-[-1deg] mb-8 relative">
+<div class="washi-tape"></div>
+<div class="flex items-center gap-2 text-secondary mb-3">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="text-label-sm font-label-sm font-bold tracking-widest uppercase">Observation</span>
+</div>
+<p class="text-title-md font-title-md text-on-surface leading-tight">
+                            The focus is shifting towards natural textures and soft, diffused lighting.
+                        </p>
+<div class="mt-4 flex gap-2">
+<button class="bg-surface text-on-surface px-3 py-1 rounded-full text-xs font-bold border border-outline-variant hover:bg-secondary hover:text-on-secondary transition-colors">Lean In</button>
+<button class="bg-transparent text-on-surface-variant px-3 py-1 rounded-full text-xs hover:bg-surface-variant transition-colors">Dismiss</button>
+</div>
+</div>
+<!-- Masonry Grid -->
+<div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+<!-- Main Typography Ref -->
+<div class="break-inside-avoid bg-surface-container-lowest p-8 tape-effect rotate-[1deg] group relative">
+<div class="pin"></div>
+<p class="text-label-sm font-label-sm text-outline mb-2 uppercase tracking-widest">Type Ref</p>
+<h1 class="text-display-xl font-display-xl text-on-surface leading-none mb-4" style="font-family: 'EB Garamond', serif;">Hygge Home</h1>
+<p class="text-headline-lg font-headline-lg text-secondary opacity-80" style="font-family: 'Caveat', cursive;">Calm. Quiet. True.</p>
+<!-- Action Overlay -->
+<div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2 backdrop-blur-[1px]">
+<button class="w-10 h-10 bg-surface rounded-full flex items-center justify-center text-tertiary shadow-md hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+</div>
+</div>
+<!-- Image 1 -->
+<div class="break-inside-avoid tape-effect rotate-[-1deg] overflow-hidden group relative">
+<div class="pin" style="top: 12px; left: 12px; background-color: #9e3d00;"></div>
+<img alt="Nordic Interior" class="w-full h-auto object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOxvBUxYIU5hPd76DGsj4f6v0yVWMbj6uDms9_lM10s_etI4TyamyfgfKxwaQOcDWVJi3MVQOC1ks-xDFndtsfEr7DxVZCjVqycILyvpb2ngYljqa3bFUXN4W8D6LvWjQio89baCLXfQCcamzKqhNCqj39gDU8-Dor3ol8BJAniQfbfhqBg_BDuxlTw5TlM_LLnQKK7ltJRFUekOhsIJcC9t7BaL15d0jf84UG-CxqWugcN34UmtI1"/>
+<!-- Handwritten note over image -->
+<div class="absolute bottom-6 right-4 text-white text-xl rotate-[-5deg] drop-shadow-md" style="font-family: 'Caveat', cursive;">
+                             Love the light!
+                         </div>
+</div>
+<!-- Image 2 -->
+<div class="break-inside-avoid tape-effect rotate-[2deg] group relative">
+<div class="washi-tape" style="top: -10px; left: 80%; background-color: rgba(182, 208, 136, 0.6);"></div>
+<img alt="Texture Ref" class="w-full h-auto object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWFEuhiD2fPGi1aGWE8FNRb0iCk31TwbU2XkLlFq0qDwSYQnD6-mzIMdLbDUWLCQSwdFpQ7g2fkqm2V-GPabDYHxILDfPKWmaOKqJoRrp87dkKX0N8dnMQ9Ao6PwLj44nHbo1rh5i6F-fethL_1tagKcZnGwM2P0xJb6ubMAUV0bqqZD0UpqzB2HNVTzQL5BY8gF6dgzvuj3W7KZCxhdIej3jhVef0DO9oSlwPR7GEfSwoARJfCs5M"/>
+</div>
+<!-- Text Snippet -->
+<div class="break-inside-avoid bg-[#eadecc] tape-effect rotate-[1deg] p-8 flex items-center justify-center relative min-h-[180px]">
+<div class="washi-tape" style="top: 50%; left: -20px; width: 40px; transform: rotate(90deg);"></div>
+<h2 class="text-headline-lg-mobile font-headline-lg-mobile text-[#131f00] leading-tight text-center">
+                             Design for <span class="text-primary border-b-4 border-primary">wellbeing.</span>
+</h2>
+</div>
+<!-- Texture Sample -->
+<div class="break-inside-avoid tape-effect rotate-[-2deg] group bg-surface-container border border-primary/20 p-4">
+<div class="pin"></div>
+<p class="text-label-sm font-label-sm text-outline uppercase tracking-widest mb-2">Material / Motif</p>
+<div class="mt-2 rounded overflow-hidden relative">
+<img alt="Wood texture" class="w-full h-32 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEnM19LJijrSKYnCvKCxtOWAIlJw3Duwn58DK6MDsablf60GMFd0n1pzUyB5-aEHltkTnLU3ciBZOQM0khE7L6bIY3Kd66rOH8jvO3qNuVhpSYMTR1NG92sbobzSh7iygvE0n-xfPxH3f-Lx3br7Bxqlc6yt0pWPJG8Bv8ipna3pvzBlOXLIj7eU4_LbNtscpFx6LCXsNchHjdgtmMeq6hSnLJ64SajHle99QhQ5wPQIPAfwMqCCfC"/>
+</div>
+</div>
+<!-- Image 3 -->
+<div class="break-inside-avoid tape-effect rotate-[-1deg] overflow-hidden group relative">
+<div class="pin"></div>
+<img alt="Exterior Architecture" class="w-full h-auto object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4m_jb7hxuaRv5SBL3hpLCk8FJtrZfgMdxk0qqE5bkUQMDLyNheBHrKL3V4daq_TGRsM6VOC2PSOx8XI8W2Gf_dahzaRbBGSsWNi0eGtJLhzSt0zfW8_CsW-N_QStHvuPFjw940Y_2WcKI6IK7UXMqSFjD-Gj6UA0EL2XyVDN1xV7fsP-3Uj1EBRSMWgoqQRjyTrb32i4RQuQMtFVedEVbdtEcr9W35IeUi116CvCkgquPRXg_waaZ"/>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: AI Suggestions -->
+<div class="w-full xl:w-80 shrink-0">
+<div class="p-6 border-l-2 border-dashed border-secondary/30 bg-secondary/5 rounded-3xl sticky top-0">
+<div class="flex items-center gap-2 mb-6 text-secondary">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<h3 class="text-title-md font-title-md">Suggested by AI</h3>
+</div>
+<div class="flex flex-col gap-6">
+<!-- AI Suggestion 1 -->
+<div class="bg-surface-container-lowest p-3 tape-effect group cursor-pointer hover:scale-105 transition-transform relative">
+<div class="h-32 mb-2 overflow-hidden rounded-sm">
+<img alt="AI Suggestion 1" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8sm7FPmn7m2rAsTSOln2Ogra8SOcuKBApN3xxCv-94d-8PaXAPJRNZN_Gf0hZ0mpnpVcS3o7LUbAFOEg3G4F26vr8yP05ms28cyj-aug2KYGycAvcSZk37hPBgi9aNKVQd0XMCnEfSjLBndwbkDFoOAwco7QIdLgYHS1AWkE2_FycBgnzCsJisCB2mfXyPDj-vbW6uOhweQRkMmguxJFx0aNTRWbbdU75vn8n3EKwMSFpjaOIZW4Z"/>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant font-bold">Incorporate natural stone</p>
+<p class="text-xs text-outline mt-1">Grounding elements for balance.</p>
+<div class="absolute top-4 right-4 bg-surface rounded-full w-8 h-8 flex items-center justify-center shadow opacity-0 group-hover:opacity-100 transition-opacity text-primary">
+<span class="material-symbols-outlined text-sm">add</span>
+</div>
+</div>
+<!-- AI Suggestion 2 -->
+<div class="bg-surface-container-lowest p-3 tape-effect group cursor-pointer hover:scale-105 transition-transform relative">
+<div class="h-24 mb-2 overflow-hidden rounded-sm bg-primary-container">
+<img alt="AI Suggestion 2" class="w-full h-full object-cover mix-blend-multiply opacity-50" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJpvFJ48ip7V3T1W0LDT5y3cdgSC8HgscuDa2qMzZKiqoZry-NigW-ltnN1bYCz4ZHShjL3bSP3r5tGjdpjz3NR6-TDboNwFBuEa_hhcgBeuI8fnKlxYp-fNZ_S8F7XLUJD7ComUFJmUPP6RTSPu81OcbeRrgyKpCfFleETha5iKx3MoLVsDbB3AM7wSuuVnVc2iGderrkY34_szpCDf5Clt9e76nrcY9JAs2zlo5hZ91PBfnyMYh5"/>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant font-bold">Monochromatic palettes</p>
+<p class="text-xs text-outline mt-1">Explore subtle tone variations.</p>
+<div class="absolute top-4 right-4 bg-surface rounded-full w-8 h-8 flex items-center justify-center shadow opacity-0 group-hover:opacity-100 transition-opacity text-primary">
+<span class="material-symbols-outlined text-sm">add</span>
+</div>
+</div>
+</div>
+<button class="mt-6 flex items-center gap-2 text-label-sm font-label-sm text-secondary hover:underline">
+<span class="material-symbols-outlined text-sm">refresh</span> Regenerate suggestions
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

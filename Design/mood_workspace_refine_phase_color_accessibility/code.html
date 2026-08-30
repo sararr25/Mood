@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOOD - Refine Phase (Color &amp; Accessibility)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#4d6328",
+                      "on-surface": "#251913",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#657c3e",
+                      "surface-bright": "#fff8f6",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#e0c0b2",
+                      "secondary-fixed": "#dde1ff",
+                      "on-secondary": "#ffffff",
+                      "inverse-on-surface": "#ffede7",
+                      "on-surface-variant": "#594238",
+                      "primary-fixed-dim": "#ffb595",
+                      "on-primary": "#ffffff",
+                      "surface-variant": "#f6ddd4",
+                      "on-secondary-fixed": "#001356",
+                      "background": "#fff8f6",
+                      "surface": "#fff8f6",
+                      "on-primary-fixed": "#351000",
+                      "secondary": "#0040e0",
+                      "tertiary-fixed": "#d2eca2",
+                      "inverse-primary": "#ffb595",
+                      "surface-container-highest": "#f6ddd4",
+                      "on-tertiary-container": "#faffe8",
+                      "surface-container": "#ffe9e1",
+                      "on-primary-container": "#fffbff",
+                      "secondary-fixed-dim": "#b8c3ff",
+                      "on-secondary-fixed-variant": "#0035be",
+                      "on-tertiary": "#ffffff",
+                      "on-background": "#251913",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#ffdbcd",
+                      "surface-container-high": "#fce3da",
+                      "on-tertiary-fixed": "#131f00",
+                      "secondary-container": "#2e5bff",
+                      "surface-tint": "#a23f00",
+                      "on-error": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-secondary-container": "#efefff",
+                      "on-tertiary-fixed-variant": "#394d14",
+                      "outline": "#8c7166",
+                      "surface-dim": "#edd5cc",
+                      "primary": "#9e3d00",
+                      "surface-container-low": "#fff1ec",
+                      "on-primary-fixed-variant": "#7c2e00",
+                      "tertiary-fixed-dim": "#b6d088",
+                      "inverse-surface": "#3c2d27",
+                      "primary-container": "#c64f00"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "unit": "8px",
+                      "margin-desktop": "40px",
+                      "gutter": "24px",
+                      "container-max": "1440px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Manrope"
+                      ],
+                      "headline-lg": [
+                              "EB Garamond"
+                      ],
+                      "display-xl": [
+                              "Bricolage Grotesque"
+                      ],
+                      "body-lg": [
+                              "Manrope"
+                      ],
+                      "label-sm": [
+                              "Manrope"
+                      ],
+                      "title-md": [
+                              "EB Garamond"
+                      ],
+                      "headline-lg-mobile": [
+                              "EB Garamond"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-xl": [
+                              "64px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.04em",
+                                      "fontWeight": "800"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "title-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.3",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        /* Custom styles for studio aesthetic */
+        body {
+            background-color: theme('colors.background');
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+            color: theme('colors.on-background');
+        }
+        
+        .studio-card {
+            background-color: theme('colors.surface-container-lowest');
+            border: 1px solid theme('colors.outline-variant');
+            box-shadow: 4px 4px 0px 0px rgba(140, 113, 102, 0.1);
+            position: relative;
+        }
+
+        .studio-tape {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 80px;
+            height: 24px;
+            background-color: rgba(224, 192, 178, 0.6);
+            border: 1px solid rgba(140, 113, 102, 0.2);
+            z-index: 10;
+        }
+
+        .studio-pin {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: theme('colors.primary');
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.2), inset -2px -2px 4px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .organic-underline {
+            text-decoration: underline;
+            text-decoration-color: theme('colors.primary');
+            text-decoration-thickness: 2px;
+            text-underline-offset: 4px;
+        }
+        
+        /* Simulating Handwritten font for annotations if needed */
+        .handwritten {
+            font-family: 'Caveat', cursive; /* Assuming Caveat could be loaded, falling back to a slanted body */
+            font-style: italic;
+            color: theme('colors.secondary');
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col overflow-hidden">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-desktop h-20 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 flat no shadows">
+<div class="font-display-xl text-display-xl text-primary dark:text-primary-fixed tracking-tighter">MOOD</div>
+<div class="hidden md:flex gap-8 items-center h-full">
+<a class="font-title-md text-title-md text-on-surface-variant dark:text-outline font-medium pb-2 hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 h-full flex items-center" href="#">01 Explore</a>
+<a class="font-title-md text-title-md text-on-surface-variant dark:text-outline font-medium pb-2 hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 h-full flex items-center" href="#">02 Direction</a>
+<a class="font-title-md text-title-md text-primary dark:text-primary-fixed-dim border-b-2 border-primary font-bold pb-2 h-full flex items-center transform scale-98 duration-150" href="#">03 Refine</a>
+<a class="font-title-md text-title-md text-on-surface-variant dark:text-outline font-medium pb-2 hover:text-primary dark:hover:text-primary-fixed transition-colors duration-200 h-full flex items-center" href="#">04 System</a>
+</div>
+<div class="flex gap-4 items-center">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</nav>
+<!-- Main Workspace Area -->
+<div class="flex flex-1 pt-20 h-screen w-full">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-20 h-[calc(100vh-80px)] flex flex-col py-6 bg-surface-container-low dark:bg-surface-container-lowest docked left-0 w-20 md:w-64 border-r border-outline-variant/20 shadow-sm z-40 overflow-y-auto">
+<div class="px-6 mb-8 hidden md:block">
+<div class="flex items-center gap-4 mb-4">
+<img class="w-10 h-10 rounded-full object-cover border border-outline-variant" data-alt="A small, stylized avatar image representing a creative director or designer profile picture. High quality, clear, neutral background, professional studio lighting, headshot." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPrxgwz_3K-NmuqVS9MUqBo8ammAKoX4U4VW9G4D91Ow0zuQOuZLxUreGHPY9hsPUQL_q5kgSpzAa7-Iz5WQY5ygdIOkdzifdYwydgB7z2cuHeFuOP7QbqxxY9jf8vH6mmrlKGKFI6C0v5R3TjPBGbhWQ-D2ZCrTkjfPRaOFhcEHxm_-mGfifrTMa7xbRkB0H7Q4lHbOuL-07yt5flBHmJS4nqC4nH-Hh0shLiGOM4cLsbfg5TDAaV"/>
+<div>
+<div class="font-title-md text-title-md text-on-surface">Project Alpha</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Creative Direction</div>
+</div>
+</div>
+<button class="w-full py-3 px-4 bg-primary text-on-primary rounded-DEFAULT font-label-sm text-label-sm font-bold hover:bg-primary-container transition-colors shadow-sm">
+                    New Asset
+                </button>
+</div>
+<nav class="flex flex-col gap-2 px-2 md:px-4">
+<a class="flex items-center gap-4 px-4 py-3 rounded-DEFAULT text-on-surface-variant dark:text-outline hover:bg-surface-variant/50 hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="collections">collections</span>
+<span class="font-label-sm text-label-sm hidden md:inline">References</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-DEFAULT text-on-surface-variant dark:text-outline hover:bg-surface-variant/50 hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-sm text-label-sm hidden md:inline">Notes</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-DEFAULT bg-primary-container/10 text-primary dark:text-primary-fixed-dim border-r-4 border-primary scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="palette">palette</span>
+<span class="font-label-sm text-label-sm hidden md:inline font-bold">Colors</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-DEFAULT text-on-surface-variant dark:text-outline hover:bg-surface-variant/50 hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="text_fields">text_fields</span>
+<span class="font-label-sm text-label-sm hidden md:inline">Type</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-DEFAULT text-on-surface-variant dark:text-outline hover:bg-surface-variant/50 hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-sm text-label-sm hidden md:inline">Assets</span>
+</a>
+</nav>
+</aside>
+<!-- Central Canvas -->
+<main class="flex-1 ml-20 md:ml-64 mr-0 lg:mr-80 relative overflow-y-auto overflow-x-hidden p-margin-desktop">
+<div class="max-w-[1000px] mx-auto">
+<!-- Expanded Color & Accessibility Module -->
+<div class="studio-card p-8 rounded-lg mb-12">
+<div class="studio-tape"></div>
+<div class="studio-pin"></div>
+<div class="flex justify-between items-start mb-8">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Color Palette &amp; Accessibility</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+                                Comprehensive contrast analysis and vision simulation for the current active palette. Ensuring compliance with WCAG 2.1 standards.
+                            </p>
+</div>
+<!-- Vision Simulator Toggle -->
+<div class="flex items-center gap-3 bg-surface-container-low p-2 rounded-lg border border-outline-variant/50">
+<span class="font-label-sm text-label-sm text-on-surface-variant mr-2">Simulate:</span>
+<button class="px-3 py-1 bg-surface-variant text-on-surface-variant rounded font-label-sm text-label-sm">None</button>
+<button class="px-3 py-1 hover:bg-surface-variant/50 text-on-surface-variant rounded font-label-sm text-label-sm transition-colors">Protanopia</button>
+<button class="px-3 py-1 hover:bg-surface-variant/50 text-on-surface-variant rounded font-label-sm text-label-sm transition-colors">Deuteranopia</button>
+<button class="px-3 py-1 hover:bg-surface-variant/50 text-on-surface-variant rounded font-label-sm text-label-sm transition-colors">Grayscale</button>
+</div>
+</div>
+<!-- Contrast Grid -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="p-4 border-b border-outline-variant font-label-sm text-label-sm text-on-surface-variant">Text / Element</th>
+<th class="p-4 border-b border-outline-variant font-label-sm text-label-sm text-on-surface-variant">Background</th>
+<th class="p-4 border-b border-outline-variant font-label-sm text-label-sm text-on-surface-variant">Ratio</th>
+<th class="p-4 border-b border-outline-variant font-label-sm text-label-sm text-on-surface-variant">WCAG AA</th>
+<th class="p-4 border-b border-outline-variant font-label-sm text-label-sm text-on-surface-variant">WCAG AAA</th>
+<th class="p-4 border-b border-outline-variant font-label-sm text-label-sm text-on-surface-variant">Sample</th>
+</tr>
+</thead>
+<tbody>
+<!-- Row 1: Primary on Surface -->
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-lowest transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-primary"></div>
+<span class="font-body-md text-body-md text-on-surface">Primary (Terracotta)</span>
+</div>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-surface border border-outline-variant"></div>
+<span class="font-body-md text-body-md text-on-surface">Surface (Cream)</span>
+</div>
+</td>
+<td class="p-4 font-body-md text-body-md font-bold text-on-surface">6.8:1</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 bg-tertiary-container/20 text-tertiary px-2 py-1 rounded font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="check_circle">check_circle</span> Pass
+                                        </span>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 bg-error-container/50 text-error px-2 py-1 rounded font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="cancel">cancel</span> Fail (Norm)
+                                        </span>
+</td>
+<td class="p-4">
+<div class="p-2 bg-surface text-primary font-body-md text-body-md rounded border border-outline-variant/50">Abc</div>
+</td>
+</tr>
+<!-- Row 2: Secondary on Surface -->
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-lowest transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-secondary"></div>
+<span class="font-body-md text-body-md text-on-surface">Secondary (Cobalt)</span>
+</div>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-surface border border-outline-variant"></div>
+<span class="font-body-md text-body-md text-on-surface">Surface (Cream)</span>
+</div>
+</td>
+<td class="p-4 font-body-md text-body-md font-bold text-on-surface">8.2:1</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 bg-tertiary-container/20 text-tertiary px-2 py-1 rounded font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="check_circle">check_circle</span> Pass
+                                        </span>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 bg-tertiary-container/20 text-tertiary px-2 py-1 rounded font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="check_circle">check_circle</span> Pass
+                                        </span>
+</td>
+<td class="p-4">
+<div class="p-2 bg-surface text-secondary font-body-md text-body-md rounded border border-outline-variant/50">Abc</div>
+</td>
+</tr>
+<!-- Row 3: On-Surface on Surface -->
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-on-surface"></div>
+<span class="font-body-md text-body-md text-on-surface">On Surface (Ink)</span>
+</div>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-surface border border-outline-variant"></div>
+<span class="font-body-md text-body-md text-on-surface">Surface (Cream)</span>
+</div>
+</td>
+<td class="p-4 font-body-md text-body-md font-bold text-on-surface">15.4:1</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 bg-tertiary-container/20 text-tertiary px-2 py-1 rounded font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="check_circle">check_circle</span> Pass
+                                        </span>
+</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 bg-tertiary-container/20 text-tertiary px-2 py-1 rounded font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="check_circle">check_circle</span> Pass
+                                        </span>
+</td>
+<td class="p-4">
+<div class="p-2 bg-surface text-on-surface font-body-md text-body-md rounded border border-outline-variant/50">Abc</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Right Side Creative Critique Panel -->
+<aside class="fixed right-0 top-20 h-[calc(100vh-80px)] hidden lg:flex flex-col w-80 bg-surface border-l border-outline-variant/20 shadow-sm z-40 p-6 overflow-y-auto">
+<h2 class="font-title-md text-title-md text-on-surface mb-6 border-b border-outline-variant/30 pb-2">Critique &amp; Notes</h2>
+<div class="space-y-6">
+<!-- Note 1 -->
+<div class="bg-surface-container-low p-4 rounded-DEFAULT border border-outline-variant/50 relative">
+<div class="absolute -top-2 -right-2 bg-secondary text-on-secondary text-xs w-5 h-5 flex items-center justify-center rounded-full">1</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-2">
+                        "The primary terracotta contrast is failing AAA on normal text sizes. We might need to darken it slightly or reserve it for headlines only."
+                    </p>
+<span class="font-label-sm text-label-sm text-outline">— Sarah J.</span>
+</div>
+<!-- Note 2 -->
+<div class="bg-surface-container-low p-4 rounded-DEFAULT border border-outline-variant/50 relative">
+<div class="absolute -top-2 -right-2 bg-secondary text-on-secondary text-xs w-5 h-5 flex items-center justify-center rounded-full">2</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-2">
+                        "Love the cobalt blue as a secondary action color. Pops nicely against the cream surface."
+                    </p>
+<span class="font-label-sm text-label-sm text-outline">— Mike T.</span>
+</div>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant/30">
+<textarea class="w-full bg-surface-container-lowest border-outline-variant rounded-DEFAULT p-3 font-body-md text-body-md focus:border-secondary focus:ring-1 focus:ring-secondary resize-none" placeholder="Add a note..." rows="3"></textarea>
+<button class="w-full mt-3 py-2 bg-on-surface text-surface-container-lowest rounded-DEFAULT font-label-sm text-label-sm font-bold hover:bg-surface-tint transition-colors">
+                    Post Note
+                </button>
+</div>
+</aside>
+</div>
+</body></html>

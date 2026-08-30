@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOOD - Color Exploration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&amp;family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#b6d088",
+                    "on-error": "#ffffff",
+                    "surface-container": "#ffe9e1",
+                    "surface-dim": "#edd5cc",
+                    "surface-container-high": "#fce3da",
+                    "on-secondary-fixed-variant": "#0035be",
+                    "on-error-container": "#93000a",
+                    "surface-variant": "#f6ddd4",
+                    "on-tertiary-fixed-variant": "#394d14",
+                    "on-secondary": "#ffffff",
+                    "outline-variant": "#e0c0b2",
+                    "tertiary-fixed": "#d2eca2",
+                    "secondary-fixed": "#dde1ff",
+                    "surface-container-highest": "#f6ddd4",
+                    "outline": "#8c7166",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#7c2e00",
+                    "on-tertiary-fixed": "#131f00",
+                    "primary": "#9e3d00",
+                    "primary-container": "#c64f00",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#efefff",
+                    "on-primary-fixed": "#351000",
+                    "inverse-surface": "#3c2d27",
+                    "primary-fixed": "#ffdbcd",
+                    "on-background": "#251913",
+                    "on-surface": "#251913",
+                    "secondary": "#0040e0",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed-dim": "#ffb595",
+                    "on-secondary-fixed": "#001356",
+                    "surface-container-low": "#fff1ec",
+                    "secondary-fixed-dim": "#b8c3ff",
+                    "on-primary-container": "#fffbff",
+                    "inverse-on-surface": "#ffede7",
+                    "on-surface-variant": "#594238",
+                    "on-tertiary-container": "#faffe8",
+                    "surface-tint": "#a23f00",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#fff8f6",
+                    "tertiary": "#4d6328",
+                    "surface": "#fff8f6",
+                    "inverse-primary": "#ffb595",
+                    "secondary-container": "#2e5bff",
+                    "error": "#ba1a1a",
+                    "background": "#fff8f6",
+                    "tertiary-container": "#657c3e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1440px",
+                    "unit": "8px",
+                    "gutter": "24px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "title-md": [
+                            "EB Garamond"
+                    ],
+                    "body-lg": [
+                            "Manrope"
+                    ],
+                    "display-xl": [
+                            "Bricolage Grotesque"
+                    ],
+                    "headline-lg-mobile": [
+                            "EB Garamond"
+                    ],
+                    "label-sm": [
+                            "Manrope"
+                    ],
+                    "body-md": [
+                            "Manrope"
+                    ],
+                    "headline-lg": [
+                            "EB Garamond"
+                    ]
+            },
+            "fontSize": {
+                    "title-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "display-xl": [
+                            "64px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.04em",
+                                    "fontWeight": "800"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        .paper-texture {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+        .handwritten {
+            font-family: 'Caveat', cursive; /* Fallback if not loaded, otherwise just use a distinct style */
+            font-style: italic;
+        }
+        
+        /* Subtle transition for the layout shift */
+        .layout-shift {
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md paper-texture overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-md flex justify-between items-center w-full px-margin-desktop h-20 bg-surface dark:bg-surface border-b border-outline-variant/30 sticky top-0 z-50">
+<div class="flex items-center gap-gutter">
+<h1 class="font-display-xl text-display-xl font-extrabold tracking-tighter text-primary dark:text-primary-fixed-dim">MOOD</h1>
+<nav class="hidden md:flex gap-6 items-center ml-8">
+<a class="text-on-surface-variant dark:text-on-surface-variant/70 font-body-md hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">01 Explore</a>
+<a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary dark:border-primary-fixed-dim pb-1 hover:text-primary dark:hover:text-primary-fixed-dim transition-colors scale-95 transition-transform duration-150" href="#">02 Direction</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant/70 font-body-md hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">03 Refine</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant/70 font-body-md hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">04 System</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2 font-label-sm text-label-sm">
+                Support
+            </button>
+<div class="flex gap-2 border-l border-outline-variant/30 pl-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-variant/50">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+<img alt="User avatar" class="w-10 h-10 rounded-full border-2 border-outline-variant/50 object-cover ml-2" data-alt="A small, circular avatar portrait of a creative professional in a warmly lit studio environment, high quality, realistic photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhJDxGKwCxP9rfy1RB4VhzyZ538HHC7z2qVvnWRRpQyLEGLSyE8e_mv8FD-9xxMon858_jbuyIAbcB9v6BLVhRtg5vgdP7RfgrgeLaoCSfy4BNe3LBjo0TN-lpI1GUntMp6_7-MDJUhFlSNijc44HONxDvW3tOHQB4_F2cufaH-Hb44uhZ3K-IlohFVohBe_EUpsljHScYBVARokYCDL47cIif6VMznFYAWDBjWx4hdHkhnpyLKTT_"/>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-full py-unit px-4 gap-2 border-r border-outline-variant/20 bg-surface-container-low dark:bg-surface-dim shadow-sm dark:shadow-none w-64 flex-shrink-0 z-40">
+<div class="flex items-center gap-3 p-4 mb-4 border-b border-outline-variant/20">
+<div class="w-10 h-10 rounded-lg bg-surface-variant flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">folder</span>
+</div>
+<div>
+<h2 class="font-label-sm text-label-sm text-primary font-bold">Project Alpha</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Vibe Check</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant dark:text-on-surface-variant/80 hover:bg-surface-variant/50 hover:bg-surface-variant/50 dark:hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="collections">collections</span>
+<span class="font-label-sm text-label-sm">References</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant dark:text-on-surface-variant/80 hover:bg-surface-variant/50 hover:bg-surface-variant/50 dark:hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-sm text-label-sm">Notes</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg bg-primary-container dark:bg-primary-container/20 text-on-primary-container dark:text-primary-fixed-dim rounded-lg font-bold hover:bg-surface-variant/50 dark:hover:bg-surface-container-highest transition-all scale-[0.98] duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="palette">palette</span>
+<span class="font-label-sm text-label-sm">Colors</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant dark:text-on-surface-variant/80 hover:bg-surface-variant/50 hover:bg-surface-variant/50 dark:hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="text_fields">text_fields</span>
+<span class="font-label-sm text-label-sm">Type</span>
+</a>
+<a class="flex items-center gap-3 p-3 rounded-lg text-on-surface-variant dark:text-on-surface-variant/80 hover:bg-surface-variant/50 hover:bg-surface-variant/50 dark:hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-sm text-label-sm">Assets</span>
+</a>
+</nav>
+<button class="mt-4 bg-primary text-on-primary font-label-sm text-label-sm py-3 px-6 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">add</span> Add Asset
+            </button>
+<div class="mt-auto pt-4 border-t border-outline-variant/20 flex flex-col gap-1 pb-4">
+<a class="flex items-center gap-3 p-2 rounded-lg text-on-surface-variant text-sm hover:bg-surface-variant/50 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="archive">archive</span>
+<span class="font-body-md text-sm">Archive</span>
+</a>
+<a class="flex items-center gap-3 p-2 rounded-lg text-on-surface-variant text-sm hover:bg-surface-variant/50 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+<span class="font-body-md text-sm">Trash</span>
+</a>
+</div>
+</aside>
+<!-- Main Workspace Area -->
+<main class="flex-1 relative overflow-hidden flex layout-shift">
+<!-- Gallery Canvas (Shifted Left) -->
+<div class="flex-1 overflow-y-auto p-margin-desktop relative z-10 transition-all duration-300 w-2/3 lg:w-1/2">
+<div class="max-w-4xl mx-auto">
+<header class="mb-12">
+<h2 class="font-headline-lg text-headline-lg text-on-background mb-4">Color Palette Exploration</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Balancing the core terracotta identity with secondary hues to establish the foundational studio warmth.</p>
+</header>
+<!-- Bento Grid for Mood Imagery -->
+<div class="grid grid-cols-12 gap-gutter auto-rows-[200px]">
+<!-- Large Featured Card -->
+<div class="col-span-12 md:col-span-8 row-span-2 relative group rounded-xl overflow-hidden shadow-[0_4px_0_0_rgba(140,113,102,0.1)] border border-outline-variant/50 bg-surface-container">
+<div class="absolute top-4 left-4 z-20 flex gap-2">
+<span class="bg-primary text-on-primary px-3 py-1 rounded-full font-label-sm text-label-sm shadow-sm">Core Identity</span>
+</div>
+<img alt="Terracotta mood reference" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A beautifully styled flatlay of ceramic terracotta tiles, dried architectural plans on textured cream paper, and a vintage compass, bathed in warm, directional morning light casting deep shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYm0zGPQm0ODM6WPM4Bi-cND2ymRKubzRSaROp1OsIcrapQ92RgIo4ukjwP57vWujBP1gBR7hwvRQBdWDLlo0LcFrOFki-qPalbUql-hlzIoVh4agXZgG8MuI97zgdL8g0QI6hWZ7Bzm8r-NTTL3DhBEIEarHzmhAnpO27sTYRT0EEshmrZMK6-CeYKw7vW0YHQfw_2S37f1OOWW0wNiRMC1pfMMiqN-ywbLf-IVm6pvneOs0IWKnK"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80"></div>
+<div class="absolute bottom-6 left-6 right-6 z-20">
+<h3 class="font-title-md text-title-md text-white mb-1">Earthy Foundation</h3>
+<p class="font-body-md text-white/80">Establishing the primary warmth through architectural elements.</p>
+</div>
+</div>
+<!-- Supporting Card 1 -->
+<div class="col-span-12 md:col-span-4 row-span-1 relative group rounded-xl overflow-hidden shadow-[0_4px_0_0_rgba(140,113,102,0.1)] border border-outline-variant/50 bg-surface-container">
+<img alt="Cobalt blue reference" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A close-up abstract macro shot of wet cobalt blue paint being mixed with a pallete knife on a textured canvas, vibrant contrast against off-white." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUm7Y3fp5E-iF12k5_q3MdPLgt9evGzEPe_F3lcl2tcA1iWFrm57-8arFnVKQiyMndV_Oxv7peVw-hlXMDTRiw8kh7jQu70JItyDoYY50SyMvFWBbUKdh_KExfQhEU9_br8MU5s2VyIehtDLowRBCZpi4faHkiTH55FRzWrNG4cQ3qDM5pv3okfmxcy4P9SvnCQH85EJxmQ2EcL26lN46o0r7CeZc1EGr6EEJcKezi_dUodfvXjJH6"/>
+<div class="absolute top-3 right-3 z-20">
+<span class="material-symbols-outlined text-white drop-shadow-md">push_pin</span>
+</div>
+</div>
+<!-- Supporting Card 2 -->
+<div class="col-span-12 md:col-span-4 row-span-1 relative group rounded-xl overflow-hidden shadow-[0_4px_0_0_rgba(140,113,102,0.1)] border border-outline-variant/50 bg-tertiary-container/20">
+<div class="absolute inset-0 p-6 flex flex-col justify-between">
+<div class="w-12 h-12 rounded-full bg-tertiary shadow-inner border-2 border-white/20"></div>
+<div>
+<h4 class="font-title-md text-on-surface">Olive Accent</h4>
+<p class="font-body-md text-on-surface-variant text-sm">Grounding organic tone.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Handwritten Annotation Overlay -->
+<div class="absolute top-1/3 left-1/4 z-30 transform -rotate-6 pointer-events-none opacity-80">
+<svg class="stroke-primary fill-none stroke-2" height="60" viewbox="0 0 150 60" width="150">
+<path d="M10,50 Q40,10 100,20 T140,30" stroke-linecap="round"></path>
+<path d="M130,20 L145,30 L125,40" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>
+<span class="text-primary font-bold text-xl ml-4 block transform -translate-y-4">Push contrast here?</span>
+</div>
+</div>
+</div>
+<!-- Expanded Color Panel (Right Sidebar) -->
+<div class="w-1/3 lg:w-[480px] bg-surface-container-low border-l border-outline-variant/30 h-full overflow-y-auto flex-shrink-0 shadow-[-10px_0_20px_-10px_rgba(0,0,0,0.05)] relative z-20">
+<div class="p-6 md:p-8 flex flex-col gap-8">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">Palette Mixer</h3>
+<button class="w-10 h-10 rounded-full hover:bg-surface-variant/50 flex items-center justify-center text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<!-- Vibe Balance Visualizer -->
+<div class="space-y-4">
+<div class="flex justify-between items-end mb-2">
+<h4 class="font-title-md text-title-md text-on-background text-lg">Proportions</h4>
+<span class="bg-surface-variant text-on-surface-variant px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">Draft 2</span>
+</div>
+<!-- Stacked Bar for Proportions -->
+<div class="h-12 w-full rounded-lg overflow-hidden flex shadow-inner border border-outline-variant/30">
+<div class="bg-primary h-full flex items-center justify-center text-white font-label-sm text-xs" style="width: 55%;">55%</div>
+<div class="bg-surface h-full flex items-center justify-center text-on-surface font-label-sm text-xs border-l border-outline-variant/20" style="width: 30%;">30%</div>
+<div class="bg-secondary h-full flex items-center justify-center text-white font-label-sm text-xs" style="width: 10%;">10%</div>
+<div class="bg-tertiary h-full flex items-center justify-center text-white font-label-sm text-xs" style="width: 5%;">5%</div>
+</div>
+<div class="flex justify-between text-sm text-on-surface-variant italic opacity-70 mt-2">
+<span>Warmth +70%</span>
+<span>High Contrast</span>
+</div>
+</div>
+<hr class="border-outline-variant/30"/>
+<!-- Color Details Blocks -->
+<div class="space-y-6">
+<!-- Primary Block -->
+<div class="group relative rounded-xl p-4 border border-outline-variant/50 bg-surface hover:border-primary/50 transition-colors shadow-sm">
+<div class="flex items-start gap-4">
+<div class="w-16 h-16 rounded-lg bg-primary shadow-inner border border-black/10 flex-shrink-0"></div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<h5 class="font-title-md text-lg text-on-background">Terracotta</h5>
+<span class="text-xs font-mono text-on-surface-variant bg-surface-variant px-2 py-0.5 rounded">#9E3D00</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-3">Primary brand anchor. Use for dominant CTA, key typography, and heavy structural elements.</p>
+<!-- Shade Swatches -->
+<div class="flex gap-2">
+<div class="w-6 h-6 rounded bg-primary-container border border-outline-variant/20 cursor-pointer hover:scale-110 transition-transform"></div>
+<div class="w-6 h-6 rounded bg-primary-fixed border border-outline-variant/20 cursor-pointer hover:scale-110 transition-transform"></div>
+<div class="w-6 h-6 rounded bg-primary-fixed-dim border border-outline-variant/20 cursor-pointer hover:scale-110 transition-transform"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Block -->
+<div class="group relative rounded-xl p-4 border border-outline-variant/50 bg-surface hover:border-secondary/50 transition-colors shadow-sm">
+<div class="flex items-start gap-4">
+<div class="w-16 h-16 rounded-lg bg-secondary shadow-inner border border-black/10 flex-shrink-0"></div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<h5 class="font-title-md text-lg text-on-background">Cobalt</h5>
+<span class="text-xs font-mono text-on-surface-variant bg-surface-variant px-2 py-0.5 rounded">#0040E0</span>
+</div>
+<p class="text-sm text-on-surface-variant">High-tension accent for interactive states and focus rings.</p>
+</div>
+</div>
+</div>
+<!-- Tertiary Block -->
+<div class="group relative rounded-xl p-4 border border-outline-variant/50 bg-surface hover:border-tertiary/50 transition-colors shadow-sm">
+<div class="flex items-start gap-4">
+<div class="w-16 h-16 rounded-lg bg-tertiary shadow-inner border border-black/10 flex-shrink-0"></div>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<h5 class="font-title-md text-lg text-on-background">Olive</h5>
+<span class="text-xs font-mono text-on-surface-variant bg-surface-variant px-2 py-0.5 rounded">#4D6328</span>
+</div>
+<p class="text-sm text-on-surface-variant">Muted organic structural tone for subtle categorizations.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="mt-8 flex gap-4">
+<button class="flex-1 bg-surface-variant text-on-surface-variant font-label-sm py-3 rounded-lg font-bold hover:bg-outline-variant/50 transition-colors border border-outline-variant/50">
+                            Reset
+                        </button>
+<button class="flex-[2] bg-inverse-surface text-inverse-on-surface font-label-sm py-3 rounded-lg font-bold hover:opacity-90 transition-opacity shadow-md">
+                            Apply to Canvas
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

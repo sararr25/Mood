@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOOD Workspace - Refine</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;family=EB+Garamond:wght@500;600&amp;family=Manrope:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-on-surface": "#ffede7",
+                      "surface-container-high": "#fce3da",
+                      "inverse-primary": "#ffb595",
+                      "primary-fixed-dim": "#ffb595",
+                      "surface-container": "#ffe9e1",
+                      "on-background": "#251913",
+                      "background": "#fff8f6",
+                      "secondary-container": "#2e5bff",
+                      "on-tertiary": "#ffffff",
+                      "outline": "#8c7166",
+                      "on-error": "#ffffff",
+                      "surface-variant": "#f6ddd4",
+                      "on-primary-fixed": "#351000",
+                      "tertiary-fixed": "#d2eca2",
+                      "on-primary": "#ffffff",
+                      "on-secondary-fixed": "#001356",
+                      "surface-dim": "#edd5cc",
+                      "secondary": "#0040e0",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-container": "#fffbff",
+                      "primary": "#9e3d00",
+                      "primary-fixed": "#ffdbcd",
+                      "surface-bright": "#fff8f6",
+                      "tertiary-container": "#657c3e",
+                      "on-tertiary-fixed": "#131f00",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed-variant": "#0035be",
+                      "on-tertiary-container": "#faffe8",
+                      "on-primary-fixed-variant": "#7c2e00",
+                      "secondary-fixed": "#dde1ff",
+                      "on-secondary-container": "#efefff",
+                      "on-surface": "#251913",
+                      "inverse-surface": "#3c2d27",
+                      "outline-variant": "#e0c0b2",
+                      "surface-container-highest": "#f6ddd4",
+                      "on-surface-variant": "#594238",
+                      "surface": "#fff8f6",
+                      "on-tertiary-fixed-variant": "#394d14",
+                      "surface-tint": "#a23f00",
+                      "tertiary": "#4d6328",
+                      "error": "#ba1a1a",
+                      "secondary-fixed-dim": "#b8c3ff",
+                      "tertiary-fixed-dim": "#b6d088",
+                      "on-secondary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "surface-container-low": "#fff1ec",
+                      "primary-container": "#c64f00"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "margin-desktop": "40px",
+                      "unit": "8px",
+                      "container-max": "1440px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Manrope"],
+                      "display-xl": ["Bricolage Grotesque"],
+                      "title-md": ["EB Garamond"],
+                      "headline-lg-mobile": ["EB Garamond"],
+                      "body-md": ["Manrope"],
+                      "label-sm": ["Manrope"],
+                      "headline-lg": ["EB Garamond"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                      "title-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .tape-effect {
+            box-shadow: 4px 4px 0px 0px rgba(140, 113, 102, 0.2);
+            border: 1px solid rgba(140, 113, 102, 0.4);
+            background-color: theme('colors.surface-container-lowest');
+        }
+        .pin {
+            width: 12px;
+            height: 12px;
+            background-color: theme('colors.tertiary');
+            border-radius: 50%;
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.2), 2px 2px 4px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        .pin::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 3px;
+            height: 3px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50%;
+        }
+        .washi-tape {
+            position: absolute;
+            width: 60px;
+            height: 20px;
+            background-color: rgba(224, 192, 178, 0.6);
+            transform: rotate(-5deg);
+            top: -10px;
+            left: 50%;
+            margin-left: -30px;
+            border: 1px solid rgba(140, 113, 102, 0.2);
+            z-index: 10;
+        }
+        .annotation {
+            font-family: 'Caveat', cursive;
+            color: theme('colors.secondary');
+            transform: rotate(-3deg);
+            letter-spacing: 1px;
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Custom Scrollbar for inner panels */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: theme('colors.outline-variant');
+            border-radius: 20px;
+        }
+        
+        .pattern-bg {
+            background-image: radial-gradient(rgba(140, 113, 102, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-background text-on-surface antialiased h-screen flex flex-col overflow-hidden">
+<!-- Top Navigation -->
+<header class="bg-surface/80 backdrop-blur-md flex justify-between items-center w-full px-margin-desktop h-20 bg-surface border-b border-outline-variant/30 flex-shrink-0 z-50">
+<div class="flex items-center gap-8">
+<div class="font-display-xl text-display-xl font-extrabold tracking-tighter text-primary">MOOD</div>
+<div class="hidden md:flex gap-6 pt-2">
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="#">01 Explore</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="#">02 Direction</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 scale-95 transition-transform duration-150" href="#">03 Refine</a>
+<a class="text-on-surface-variant font-body-md hover:text-primary transition-colors" href="#">04 System</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="font-label-sm text-label-sm text-on-surface hover:text-primary transition-colors">Support</button>
+<div class="flex gap-4">
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">notifications</span></button>
+<button class="hover:text-primary transition-colors"><span class="material-symbols-outlined">settings</span></button>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="A close up portrait of a creative director in a bright, modern studio space. Soft natural lighting from a window. Contemporary digital studio aesthetic. Warm, inviting, and professional. The person has a thoughtful expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDifIiM7DZUN6bvJqLiZ9zRSNim3pXRgkuZRpEk5ZLzJjT7pbGcm2-MHsqUrsNwo4gruJk5B7rqLgldw83VFksstNmr0mZkovDn_eRIh3fKU7f0MSYSjVypzdrkd5sEFKxyM17UEBsb1x1EFMaDJ59LybcgASyWFnWjftvSFR1bouEjYECLygHEF9o6R1ZEgNFzOvUBVU0lNlD5ESCkhbPMU-BU_DaIBXgznbaMQxeYGhMZ-kPevvyH"/>
+</div>
+</div>
+</header>
+<!-- Main Workspace Layout -->
+<div class="flex flex-1 overflow-hidden relative">
+<!-- Left SideNav -->
+<aside class="hidden md:flex flex-col h-full py-unit px-4 gap-2 docked left-0 h-full w-64 border-r border-outline-variant/20 bg-surface-container-low flex-shrink-0 z-40">
+<div class="flex items-center gap-3 p-4 mb-4 border-b border-outline-variant/30">
+<div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 tape-effect">
+<img alt="Project Folder" class="w-full h-full object-cover" data-alt="Abstract graphic representation of a project folder. Geometric shapes in terracotta and olive green. Clean, modern, digital studio vibe. Slight paper texture overlay." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdURBMvcSoqejjjkdkYQenPmRY_lDOVlW-abkgMyHWq46tKrU8wqf6MMp5qaIUlwv18KIOryaIBIlspW0THjXei2u69KYyDVE6XqNQWITFNu3Ogm_39rmK2NI-oT_r_QHoDxCxbBtxnalKOdV-0K7hX-xNB-LqbzjbMOA8EgFR0bjz4QuofPRIjJkJaomnf48gHB0uLX8SpUiIVkCiNiDpWMgGE5T0riOSb0joZQ3mV8hfAra8qSfB"/>
+</div>
+<div>
+<h2 class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Project Alpha</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm truncate">Vibe Check</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined">collections</span>
+<span class="font-body-md text-body-md text-sm">References</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-body-md text-body-md text-sm">Notes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary-container text-on-primary-container font-bold scale-[0.98] duration-200" href="#">
+<span class="material-symbols-outlined filled">palette</span>
+<span class="font-body-md text-body-md text-sm">Colors</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined">text_fields</span>
+<span class="font-body-md text-body-md text-sm">Type</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-md text-body-md text-sm">Assets</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-outline-variant/30 flex flex-col gap-1">
+<button class="w-full py-3 mb-4 bg-primary text-on-primary font-label-sm text-label-sm rounded-lg hover:bg-primary-container transition-colors shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">add</span> Add Asset
+                </button>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all opacity-70" href="#">
+<span class="material-symbols-outlined text-[20px]">archive</span>
+<span class="font-body-md text-body-md text-xs">Archive</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-variant/50 transition-all opacity-70" href="#">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+<span class="font-body-md text-body-md text-xs">Trash</span>
+</a>
+</div>
+</aside>
+<!-- Central Canvas -->
+<main class="flex-1 overflow-auto custom-scrollbar pattern-bg p-8">
+<div class="max-w-7xl mx-auto flex flex-col xl:flex-row gap-8">
+<div class="flex-1">
+<!-- Page Header / Note -->
+<div class="mb-12 flex justify-between items-end border-b border-outline-variant/40 pb-6 relative bg-surface-container-highest p-6 tape-effect rotate-[-1deg]">
+<div class="washi-tape"></div>
+<div>
+<p class="font-label-sm text-label-sm text-tertiary mb-2 uppercase tracking-widest flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">auto_fix</span> System Health: Strong
+                            </p>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Refining 'Wanderwell'</h1>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 bg-surface border border-outline-variant rounded-full font-label-sm text-label-sm hover:bg-surface-variant transition-colors">Export Spec</button>
+<button class="px-6 py-2 bg-primary text-on-primary rounded-full font-label-sm text-label-sm hover:bg-primary/90 shadow-sm transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">lock</span> Lock Direction
+                            </button>
+</div>
+<!-- Tactile annotation -->
+<div class="absolute right-[10%] top-4 annotation text-2xl opacity-80 z-20">
+                            Almost there!
+                            <svg class="w-16 h-4 absolute -bottom-3 left-2 text-secondary" fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 100 20">
+<path d="M5 10 Q 50 20 95 5"></path>
+</svg>
+</div>
+</div>
+<!-- Masonry Layout for Refinement -->
+<div class="columns-1 md:columns-2 gap-6 space-y-6">
+<!-- Color System -->
+<div class="break-inside-avoid tape-effect p-8 rotate-[1deg] relative">
+<div class="washi-tape" style="transform: rotate(2deg); left: 60%;"></div>
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-title-md text-title-md text-on-surface">Color Pallet &amp; Accessibility</h3>
+<span class="px-3 py-1 bg-tertiary-container/30 text-tertiary font-label-sm rounded-full text-[10px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Locked
+                                </span>
+</div>
+<div class="flex flex-wrap gap-4 mb-8">
+<!-- Primary -->
+<div class="flex flex-col gap-2">
+<div class="w-20 h-20 rounded-lg bg-[#9e3d00] shadow-inner relative overflow-hidden flex items-end p-2 group">
+<div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="text-white font-label-sm text-[10px] z-10">Primary</span>
+</div>
+<div class="font-body-md text-xs text-on-surface-variant flex justify-between">
+<span>#9E3D00</span> <span class="text-tertiary font-bold">AAA</span>
+</div>
+</div>
+<!-- Secondary -->
+<div class="flex flex-col gap-2">
+<div class="w-20 h-20 rounded-lg bg-[#0040e0] shadow-inner relative overflow-hidden flex items-end p-2 group">
+<div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="text-white font-label-sm text-[10px] z-10">Secondary</span>
+</div>
+<div class="font-body-md text-xs text-on-surface-variant flex justify-between">
+<span>#0040E0</span> <span class="text-tertiary font-bold">AA</span>
+</div>
+</div>
+<!-- Tertiary (Olive) -->
+<div class="flex flex-col gap-2">
+<div class="w-20 h-20 rounded-lg bg-[#4d6328] shadow-inner relative overflow-hidden flex items-end p-2 group">
+<div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="text-white font-label-sm text-[10px] z-10">Tertiary</span>
+</div>
+<div class="font-body-md text-xs text-on-surface-variant flex justify-between">
+<span>#4D6328</span> <span class="text-tertiary font-bold">AAA</span>
+</div>
+</div>
+<!-- Background (Cream) -->
+<div class="flex flex-col gap-2">
+<div class="w-20 h-20 rounded-lg bg-[#fff8f6] border border-outline-variant shadow-inner relative overflow-hidden flex items-end p-2 group">
+<div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="text-on-surface font-label-sm text-[10px] z-10">Surface</span>
+</div>
+<div class="font-body-md text-xs text-on-surface-variant flex justify-between">
+<span>#FFF8F6</span> <span>-</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-variant/30 p-4 rounded-lg border border-outline-variant/30">
+<p class="font-body-md text-sm text-on-surface-variant"><span class="font-bold text-on-surface">Contrast Check:</span> Text on Primary passes AAA requirements. Consider a slightly darker secondary for small text usage.</p>
+</div>
+</div>
+<!-- Typography -->
+<div class="break-inside-avoid tape-effect p-6 rotate-[-1deg] flex flex-col relative">
+<div class="pin"></div>
+<div class="flex justify-between items-start mb-4 mt-4">
+<h3 class="font-title-md text-title-md text-on-surface leading-tight">Typography<br/>Specimen</h3>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+<div class="flex-1 flex flex-col gap-6">
+<!-- Display -->
+<div>
+<p class="font-label-sm text-[10px] text-on-surface-variant uppercase mb-1">Display - Bricolage Grotesque</p>
+<p class="font-display-xl text-4xl text-on-surface tracking-tighter leading-none">Ag</p>
+<div class="w-full h-[1px] bg-outline-variant/50 mt-2"></div>
+</div>
+<!-- Headlines -->
+<div>
+<p class="font-label-sm text-[10px] text-on-surface-variant uppercase mb-1">Headlines - EB Garamond</p>
+<p class="font-headline-lg text-2xl text-on-surface">Wanderwell</p>
+<div class="w-full h-[1px] bg-outline-variant/50 mt-2"></div>
+</div>
+<!-- Body -->
+<div>
+<p class="font-label-sm text-[10px] text-on-surface-variant uppercase mb-1">Body - Manrope</p>
+<p class="font-body-md text-sm text-on-surface">The quick brown fox jumps over the lazy dog.</p>
+</div>
+</div>
+</div>
+<!-- Design Decisions Heading -->
+<div class="break-inside-avoid tape-effect p-8 rotate-[0deg] relative bg-transparent border-none shadow-none">
+<h3 class="font-title-md text-title-md text-on-surface border-b border-outline-variant/30 pb-2 inline-block">Design Decisions</h3>
+</div>
+<!-- Locked Decision 1 -->
+<div class="break-inside-avoid p-5 tape-effect rotate-[2deg] relative overflow-hidden">
+<div class="absolute top-3 right-3 text-tertiary opacity-20">
+<span class="material-symbols-outlined text-4xl filled">verified</span>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-tertiary text-sm">lock</span>
+<h4 class="font-label-sm text-sm font-bold text-on-surface uppercase">Grid System</h4>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant">Fluid 12-column grid with 24px gutters. Asymmetric breaks for editorial image placements.</p>
+</div>
+<!-- Locked Decision 2 -->
+<div class="break-inside-avoid p-5 tape-effect rotate-[-2deg] relative overflow-hidden">
+<div class="absolute top-3 right-3 text-tertiary opacity-20">
+<span class="material-symbols-outlined text-4xl filled">verified</span>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-tertiary text-sm">lock</span>
+<h4 class="font-label-sm text-sm font-bold text-on-surface uppercase">Button Styling</h4>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant">Generous horizontal padding, pill-shaped full radius, heavy font weight. No drop shadows.</p>
+</div>
+<!-- Emerging Decision -->
+<div class="break-inside-avoid p-5 tape-effect rotate-[1deg] border-dashed border-primary/40 relative group hover:border-primary transition-colors cursor-pointer bg-surface">
+<div class="washi-tape" style="transform: rotate(-3deg); left: 30%;"></div>
+<div class="absolute top-3 right-3 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-xl">edit</span>
+</div>
+<div class="flex items-center gap-2 mb-3 mt-2">
+<span class="material-symbols-outlined text-primary text-sm">pending</span>
+<h4 class="font-label-sm text-sm font-bold text-primary uppercase">Iconography Style</h4>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mb-4">Debating between solid geometric forms or subtle hand-drawn outlines to match studio vibe.</p>
+<button class="text-xs font-label-sm text-primary underline">Resolve Decision</button>
+</div>
+</div>
+<div class="h-16"></div> <!-- Spacer -->
+</div>
+<!-- Right Sidebar: AI Review Partner -->
+<div class="w-full xl:w-80 shrink-0">
+<aside class="flex flex-col h-full bg-surface-container-lowest sticky top-0 tape-effect rotate-[-1deg]">
+<div class="p-6 border-b border-outline-variant/30 bg-surface-container-low flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<h2 class="font-title-md text-lg text-on-surface">Creative Critique</h2>
+</div>
+<span class="text-xs bg-secondary-fixed text-on-secondary-fixed px-2 py-1 rounded font-label-sm">AI Partner</span>
+</div>
+<div class="p-6 flex-1 overflow-y-auto custom-scrollbar">
+<!-- Harmony Score -->
+<div class="mb-8 p-4 rounded-xl bg-tertiary-container/10 border border-tertiary-container/30 text-center">
+<p class="font-label-sm text-xs text-on-surface-variant uppercase mb-2">Harmony Score</p>
+<div class="font-display-xl text-5xl text-tertiary mb-1">92<span class="text-2xl text-tertiary/60">%</span></div>
+<p class="font-body-md text-xs text-on-surface-variant">Strong cohesive direction.</p>
+</div>
+<!-- Critique Section -->
+<div class="prose prose-sm">
+<p class="font-body-md text-sm text-on-surface-variant leading-relaxed mb-4">
+                            The <span class="font-semibold text-[#4d6328]">olive green</span> provides excellent grounding, but consider increasing the weight of your serif headers for better hierarchy in long-form content.
+                        </p>
+<div class="bg-surface-variant p-4 rounded-lg mb-6 border-l-4 border-primary">
+<p class="font-label-sm text-xs text-primary uppercase mb-1">Suggestion</p>
+<p class="font-body-md text-sm text-on-surface">Bump EB Garamond to Semibold (600) for H1 and H2 tags to balance the heavy Bricolage Grotesque display type.</p>
+</div>
+<h4 class="font-title-md text-base text-on-surface mt-6 mb-3 border-b border-outline-variant/30 pb-2">Imagery &amp; Motifs</h4>
+<ul class="space-y-3">
+<li class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-tertiary text-sm mt-0.5">check</span>
+<span class="font-body-md text-xs text-on-surface-variant">Warm, natural lighting in photography is working perfectly.</span>
+</li>
+<li class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-tertiary text-sm mt-0.5">check</span>
+<span class="font-body-md text-xs text-on-surface-variant">Paper textures add necessary tactile depth.</span>
+</li>
+<li class="flex gap-3 items-start">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5">add_circle</span>
+<span class="font-body-md text-xs text-on-surface-variant">Consider introducing subtle tape graphic elements to anchor loose components.</span>
+</li>
+</ul>
+</div>
+<!-- Interactive Action -->
+<button class="w-full mt-8 py-3 border border-outline-variant rounded-lg font-label-sm text-sm text-on-surface hover:bg-surface-variant transition-colors flex justify-center items-center gap-2 bg-surface">
+<span class="material-symbols-outlined text-sm">refresh</span> Generate New Alternatives
+                    </button>
+</div>
+</aside>
+</div>
+</div>
+</main>
+</div>
+</body></html>

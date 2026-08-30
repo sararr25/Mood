@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOOD Workspace - Search &amp; Add</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&amp;family=EB+Garamond:wght@500;600&amp;family=Manrope:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed-dim": "#b8c3ff",
+                      "surface-tint": "#a23f00",
+                      "surface-container": "#ffe9e1",
+                      "tertiary-container": "#657c3e",
+                      "on-primary-container": "#fffbff",
+                      "on-surface": "#251913",
+                      "surface-container-high": "#fce3da",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#0035be",
+                      "surface": "#fff8f6",
+                      "surface-dim": "#edd5cc",
+                      "inverse-on-surface": "#ffede7",
+                      "on-tertiary-fixed-variant": "#394d14",
+                      "outline-variant": "#e0c0b2",
+                      "on-secondary-container": "#efefff",
+                      "inverse-primary": "#ffb595",
+                      "surface-variant": "#f6ddd4",
+                      "surface-container-highest": "#f6ddd4",
+                      "on-primary-fixed": "#351000",
+                      "tertiary": "#4d6328",
+                      "on-primary": "#ffffff",
+                      "on-primary-fixed-variant": "#7c2e00",
+                      "on-secondary": "#ffffff",
+                      "surface-container-low": "#fff1ec",
+                      "on-tertiary": "#ffffff",
+                      "background": "#fff8f6",
+                      "primary-fixed-dim": "#ffb595",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-container": "#faffe8",
+                      "on-background": "#251913",
+                      "on-surface-variant": "#594238",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#ffdbcd",
+                      "secondary": "#0040e0",
+                      "secondary-fixed": "#dde1ff",
+                      "surface-bright": "#fff8f6",
+                      "on-tertiary-fixed": "#131f00",
+                      "on-error-container": "#93000a",
+                      "primary": "#9e3d00",
+                      "inverse-surface": "#3c2d27",
+                      "on-error": "#ffffff",
+                      "secondary-container": "#2e5bff",
+                      "on-secondary-fixed": "#001356",
+                      "outline": "#8c7166",
+                      "primary-container": "#c64f00",
+                      "tertiary-fixed": "#d2eca2",
+                      "tertiary-fixed-dim": "#b6d088"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "container-max": "1440px",
+                      "margin-mobile": "16px",
+                      "margin-desktop": "40px",
+                      "unit": "8px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Manrope"],
+                      "display-xl": ["Bricolage Grotesque"],
+                      "body-md": ["Manrope"],
+                      "headline-lg": ["EB Garamond"],
+                      "title-md": ["EB Garamond"],
+                      "headline-lg-mobile": ["EB Garamond"],
+                      "label-sm": ["Manrope"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "title-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        .paper-grain {
+            position: relative;
+        }
+        .paper-grain::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.4;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+            z-index: 10;
+        }
+        .tape-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(140, 113, 102, 0.2);
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md overflow-x-hidden min-h-screen">
+<!-- Top App Bar -->
+<header class="bg-surface/80 dark:bg-surface-container/80 backdrop-blur-md border-b border-outline-variant/30 docked full-width top-0 z-40 fixed w-full">
+<div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<span class="text-display-xl font-display-xl text-primary-container dark:text-primary-fixed tracking-tighter">MOOD</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant/70 dark:text-surface-variant/70 text-label-sm font-label-sm hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Brief</a>
+<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary-container pb-1 text-label-sm font-label-sm" href="#">Research</a>
+<a class="text-on-surface-variant/70 dark:text-surface-variant/70 text-label-sm font-label-sm hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Direction</a>
+<a class="text-on-surface-variant/70 dark:text-surface-variant/70 text-label-sm font-label-sm hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Concepts</a>
+<a class="text-on-surface-variant/70 dark:text-surface-variant/70 text-label-sm font-label-sm hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Refine</a>
+<a class="text-on-surface-variant/70 dark:text-surface-variant/70 text-label-sm font-label-sm hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Deliver</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface hover:text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+</button>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-sm text-label-sm hover:bg-primary-container transition-colors">Start Project</button>
+</div>
+</div>
+</header>
+<div class="flex pt-[88px] min-h-screen relative">
+<!-- Side Navigation -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-88px)] w-64 fixed left-0 top-[88px] bg-surface-container-low dark:bg-surface-dim border-r border-outline-variant/20 p-4 gap-4 z-30 overflow-y-auto">
+<div class="mb-8 mt-4 px-2">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high mb-4 overflow-hidden tape-shadow border border-outline-variant/50">
+<img alt="Project Thumbnail" class="w-full h-full object-cover" data-alt="A close-up of rough, natural sandstone texture in warm beige and terracotta tones. The lighting is harsh and directional, emphasizing the deep crevices and rugged surface. The overall mood is earthy and tactile, fitting a contemporary outdoor brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuACD9Ax6kWZ87059gLO63Im94rRTJi0Civk69-WoA01jUs_InMsKZYZJ_7JP_C4N_19PTWj0AMzRwp2CFlxExYQ3EszMHAixmRZ8aYMYsrgVUwHaYdBG06U1Z3Vx1-yjbWgmaZQ5npW9Wuwmg7pEXOQHXOOpE2o7frLDXqMactqnrFzdFfgsKCj1kbMgo-_3j_jv9E0dQsEYx-0l_xPFfrxx80wBXcX_m_pDKSGzyfBpccc87mmaqKf"/>
+</div>
+<h2 class="text-headline-lg font-headline-lg text-primary text-2xl mb-1">Wanderwell</h2>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Outdoor Travel Brand</p>
+</div>
+<nav class="flex flex-col gap-1 flex-1">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="text-label-sm font-label-sm">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary-fixed text-on-primary-fixed-variant font-bold rounded-xl transition-all scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="folder_open" style="font-variation-settings: 'FILL' 1;">folder_open</span>
+<span class="text-label-sm font-label-sm">References</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="trending_up">trending_up</span>
+<span class="text-label-sm font-label-sm">Direction</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="grid_view">grid_view</span>
+<span class="text-label-sm font-label-sm">Moodboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="description">description</span>
+<span class="text-label-sm font-label-sm">Notes</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-variant/50 rounded-xl transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="explore">explore</span>
+<span class="text-label-sm font-label-sm">Explore</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 border-t border-outline-variant/20">
+<button class="w-full bg-surface-container-high text-primary px-4 py-2 rounded-xl text-label-sm font-label-sm hover:bg-surface-variant transition-colors mb-4">Continue to Concepts</button>
+<div class="flex items-center gap-3 px-3 py-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="account_circle">account_circle</span>
+<span class="text-label-sm font-label-sm">Avery Woods</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 relative">
+<!-- Workspace Background (Blurred/Dimmed) -->
+<div class="absolute inset-0 p-margin-desktop opacity-40 blur-sm pointer-events-none transition-all duration-500 paper-grain z-0">
+<div class="grid grid-cols-12 gap-gutter">
+<div class="col-span-4 h-64 bg-surface-container rounded-lg border border-outline-variant/30 tape-shadow p-2 rotate-[-2deg]">
+<div class="w-full h-full bg-surface-variant rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-4xl">image</span>
+</div>
+</div>
+<div class="col-span-6 col-start-6 h-96 bg-surface-container rounded-lg border border-outline-variant/30 tape-shadow p-2 mt-12 rotate-[1deg]">
+<div class="w-full h-full bg-surface-variant rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-4xl">image</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Search & Add Overlay -->
+<div class="relative z-10 w-full min-h-full flex flex-col pt-8 px-margin-mobile md:px-margin-desktop max-w-[1200px] mx-auto">
+<!-- Search Bar Container -->
+<div class="w-full md:w-3/4 lg:w-1/2 mx-auto mb-12 bg-surface rounded-full shadow-lg border border-outline-variant/50 p-2 flex items-center gap-3 sticky top-[104px] z-50">
+<span class="material-symbols-outlined text-on-surface-variant ml-4" data-icon="search">search</span>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-title-md font-title-md text-on-surface placeholder:text-on-surface-variant/50" placeholder="Search references..." type="text" value="Natural Textures OR Stone Architecture"/>
+<button class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center hover:bg-surface-container-highest transition-colors mr-1">
+<span class="material-symbols-outlined text-on-surface" data-icon="tune">tune</span>
+</button>
+</div>
+<!-- Chips -->
+<div class="flex flex-wrap gap-2 justify-center mb-12">
+<span class="px-4 py-1.5 rounded-full bg-tertiary-container text-on-tertiary-container text-label-sm font-label-sm border border-tertiary/20">Organic Shapes</span>
+<span class="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface text-label-sm font-label-sm border border-outline-variant/50 hover:bg-surface-variant cursor-pointer">Minimalist</span>
+<span class="px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container text-label-sm font-label-sm border border-primary/20">Terracotta</span>
+<span class="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface text-label-sm font-label-sm border border-outline-variant/50 hover:bg-surface-variant cursor-pointer">Brutalism</span>
+</div>
+<!-- Gallery Grid -->
+<div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 pb-24">
+<!-- Item 1 (Hover State) -->
+<div class="break-inside-avoid relative group cursor-grab">
+<div class="relative bg-surface rounded-xl overflow-hidden border border-outline-variant/30 tape-shadow group-hover:-translate-y-2 group-hover:shadow-xl group-hover:shadow-primary/10 transition-all duration-300">
+<img alt="Travertine Texture" class="w-full h-auto object-cover aspect-[3/4]" data-alt="A macro shot of a weathered travertine stone wall. The surface is pitted and textured, showing rich variations of cream, warm grey, and subtle ochre. Soft, natural daylight highlights the tactile qualities of the stone, creating a serene, earthy, and architectural aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBS23uHvytt7LmimXgrrc2Bw-_aOKslvH74iU5Ie_-AcZTsX-_kQqVq8le3wDZGx-THl5Dr6HltEIcS5PENpXZKu62kdtZqCNk0oSpzFC2QBaHMyq61lwL2l6XO3l7yeN7pqmZs7mRSfKjWqYbb32VnthCWkgxhYj-kZ5J88v4LVnITWFCWi0oUFBNlBSL8d-tnVcgMG6Q8jz-dl2jhbTyg24QB1t4ALACpw4kohIzB-PdA_VE_DlVJ"/>
+<!-- Hover Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 opacity-100 transition-opacity flex flex-col justify-between p-4">
+<div class="flex justify-between items-start">
+<span class="px-2 py-1 bg-surface/90 text-on-surface rounded text-[10px] font-bold uppercase tracking-wider backdrop-blur-sm">Texture</span>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center hover:scale-110 transition-transform shadow-md">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+</div>
+<div>
+<h3 class="text-white font-title-md text-lg">Weathered Travertine</h3>
+<p class="text-white/80 font-label-sm text-xs mt-1">Found in 'Stone Architecture'</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="break-inside-avoid relative group cursor-grab">
+<div class="relative bg-surface rounded-xl overflow-hidden border border-outline-variant/30 tape-shadow transition-all duration-300">
+<img alt="Concrete Architecture" class="w-full h-auto object-cover aspect-square" data-alt="Minimalist contemporary architecture featuring massive, curved concrete walls intersecting with raw timber elements. Deep shadows cast by a harsh midday sun create strong geometric patterns. The color palette is muted, relying on the natural grey of concrete and the warm brown of the wood, conveying a sense of grounded modernism." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8XOfOy5vz0mOtv-cDRUYkTA5oOgeYCyr9VeTN_yo--udebmmpf5pnIVYWUJMRcGB5Y0fxKwwnQnVaJ638aCrBa-iksWfA3l-OjmMVeurK_2tAITkHPHIYhhyxdYWMjXgtFJCzWN85vSjwyyumbpOrQh_eZ0ccf3vDI1Srqb0fV-PcW9MZU2MCy7eWk3yQnzK6XEYv1YzM34isbLxpNsMLOG5MsGi3g0NgaeHGZg2zrZiiYQ4Kmldw"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none"></div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="break-inside-avoid relative group cursor-grab">
+<div class="relative bg-surface rounded-xl overflow-hidden border border-outline-variant/30 tape-shadow transition-all duration-300">
+<img alt="Linen Texture" class="w-full h-auto object-cover aspect-[4/3]" data-alt="Close-up of a roughly woven linen fabric in a warm, unbleached cream tone. The threads are thick and uneven, highlighting the natural, organic origin of the material. A single, thin terracotta-colored thread runs horizontally through the weave, adding a subtle accent to the highly tactile, soft studio aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfHBCaX7gmbzpL8-1I0Ymi6Uef6z9uFfIy3GTEbdSSIQEDeH94igWLQph8A2p0AM4Je2rbHWl7cnP9HaqjDjRQLHQMLWq1EBPgBlN0g7CqPIGNVcKZyvO_8XJUeMmbT9-FIXaOSSft69DNCl3RHZruc-BK0nvlVAuqoKy46gsR6su24803vSMrmrFtUWs55kgL4t-vxQdWf3hGANCDL0EtCPcsWz-ojV80g681BdL4kt1TLENQkJEx"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none"></div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="break-inside-avoid relative group cursor-grab">
+<div class="relative bg-surface rounded-xl overflow-hidden border border-outline-variant/30 tape-shadow transition-all duration-300">
+<img alt="Rammed Earth" class="w-full h-auto object-cover aspect-[2/3]" data-alt="An interior space constructed entirely of rammed earth walls in varying shades of terracotta and deep rust. The walls have distinct, horizontal sedimentary layers. A narrow skylight lets in a blade of bright white light that washes down one wall, emphasizing the raw, granular texture and the warm, cavernous atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAY-DE-O6yEhGD5kmd7eN2N2SK-9wfUXQeQ7CZLiP34ve9PCWgogdevKOZJuPxsVep6jmrveMKQT4C-_2kd9QDgvT-5r39rZrvFewfJWBs109yVfmuxUQZtu5nhUz9lE3Ke63jpwm3ogZXPJeP-oInVlhXZdIjOZTEhALJOXE2EeKOuUyI8phDHZXQdjf5h1w66aYp7u5w7Aia4-VFJKs9jVCQnOkiUIIRA_y8T06WYT6PSaxr3jcE"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors pointer-events-none"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

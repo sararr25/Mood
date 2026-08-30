@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MOOD Workspace - System Phase</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600&amp;family=Manrope:wght@400;600&amp;family=Bricolage+Grotesque:wght@800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#dde1ff",
+                        "tertiary-fixed": "#d2eca2",
+                        "surface-container-high": "#fce3da",
+                        "outline-variant": "#e0c0b2",
+                        "tertiary-fixed-dim": "#b6d088",
+                        "inverse-surface": "#3c2d27",
+                        "on-secondary-fixed": "#001356",
+                        "surface-tint": "#a23f00",
+                        "surface": "#fff8f6",
+                        "on-error": "#ffffff",
+                        "on-surface": "#251913",
+                        "on-tertiary-container": "#faffe8",
+                        "on-tertiary-fixed": "#131f00",
+                        "on-tertiary-fixed-variant": "#394d14",
+                        "surface-container-low": "#fff1ec",
+                        "secondary-container": "#2e5bff",
+                        "secondary": "#0040e0",
+                        "on-surface-variant": "#594238",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#c64f00",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#ffdbcd",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#b8c3ff",
+                        "on-primary-fixed": "#351000",
+                        "surface-dim": "#edd5cc",
+                        "on-background": "#251913",
+                        "on-primary-container": "#fffbff",
+                        "on-secondary-container": "#efefff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#ffb595",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "surface-variant": "#f6ddd4",
+                        "tertiary-container": "#657c3e",
+                        "surface-container-highest": "#f6ddd4",
+                        "tertiary": "#4d6328",
+                        "surface-container": "#ffe9e1",
+                        "on-secondary-fixed-variant": "#0035be",
+                        "outline": "#8c7166",
+                        "surface-bright": "#fff8f6",
+                        "primary": "#9e3d00",
+                        "primary-fixed-dim": "#ffb595",
+                        "inverse-on-surface": "#ffede7",
+                        "background": "#fff8f6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "unit": "8px",
+                        "margin-desktop": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["EB Garamond"],
+                        "body-md": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "title-md": ["EB Garamond"],
+                        "headline-lg-mobile": ["EB Garamond"],
+                        "label-sm": ["Manrope"],
+                        "display-xl": ["Bricolage Grotesque"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "title-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "display-xl": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: theme('colors.background'); color: theme('colors.on-background'); overflow-x: hidden; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        
+        /* Studio specific styles */
+        .tape-effect {
+            position: relative;
+            background: theme('colors.surface-container-highest');
+            border: 1px solid theme('colors.outline-variant');
+            box-shadow: 4px 4px 0 0 theme('colors.outline-variant');
+        }
+        
+        .tape-strip {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-2deg);
+            width: 80px;
+            height: 24px;
+            background-color: theme('colors.surface-variant');
+            opacity: 0.8;
+            border: 1px solid theme('colors.outline-variant');
+            box-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        .paper-grain {
+            position: relative;
+        }
+        .paper-grain::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            mix-blend-mode: multiply;
+        }
+
+        .handwritten {
+            font-family: 'Caveat', cursive; /* Fallback for handwritten vibe */
+            transform: rotate(-3deg);
+            color: theme('colors.primary');
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col paper-grain">
+<!-- TopNavBar -->
+<header class="bg-surface/80 backdrop-blur-md fixed top-0 w-full border-b border-outline-variant flat no shadows flex justify-between items-center px-gutter h-16 w-full z-50">
+<div class="flex items-center gap-6">
+<span class="font-display-xl text-title-md font-extrabold text-primary">MOOD</span>
+<nav class="hidden md:flex gap-8">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Explore</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Direction</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Refine</a>
+<a class="font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1" href="#">System</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</header>
+<div class="flex flex-1 pt-16">
+<!-- SideNavBar -->
+<aside class="hidden md:flex bg-surface-container-low bg-surface-container-low border-r border-outline-variant flat no shadows fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex flex-col py-margin-mobile w-64 h-full z-40">
+<div class="px-4 py-6 mb-4">
+<h2 class="font-title-md text-title-md text-primary mb-1">Project Studio</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Active Workspace</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1 px-2">
+<a class="font-body-md text-body-md text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">collections</span> References
+                </a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">description</span> Notes
+                </a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">palette</span> Colors
+                </a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">text_fields</span> Type
+                </a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 hover:bg-surface-variant transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span> Assets
+                </a>
+</nav>
+<div class="px-4 py-4 mt-auto border-t border-outline-variant/30">
+<button class="w-full font-body-md text-body-md bg-primary text-on-primary rounded-lg py-3 flex items-center justify-center gap-2 hover:bg-primary/90 transition-all font-bold">
+<span class="material-symbols-outlined">add</span> Add Element
+                </button>
+</div>
+<div class="flex flex-col gap-1 px-2 py-4">
+<a class="font-body-md text-body-md text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 hover:bg-surface-variant transition-all text-sm" href="#">
+<span class="material-symbols-outlined text-sm">settings</span> Settings
+                </a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:bg-surface-variant/50 rounded-lg mx-2 my-1 px-4 py-3 flex items-center gap-3 hover:bg-surface-variant transition-all text-sm" href="#">
+<span class="material-symbols-outlined text-sm">archive</span> Archive
+                </a>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop overflow-y-auto relative z-10 w-full flex flex-col xl:flex-row gap-8">
+<!-- Canvas Area -->
+<div class="flex-1 flex flex-col gap-12 max-w-5xl">
+<header class="mb-8">
+<h1 class="font-headline-lg text-headline-lg md:text-headline-lg-mobile text-on-background mb-4">MOOD Workspace <span class="text-outline">/ System Phase</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">A living document translating our raw inspiration into scalable, functional design tokens and components.</p>
+</header>
+<!-- Core Tokens: Colors -->
+<section class="flex flex-col gap-6 relative">
+<div class="absolute -left-12 top-4 w-8 h-8 rounded-full border-2 border-primary/20 flex items-center justify-center text-primary/40 font-bold hidden lg:flex">01</div>
+<h2 class="font-title-md text-title-md text-on-background border-b border-outline-variant pb-2 inline-block">Core Tokens: Color</h2>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+<div class="tape-effect p-4 flex flex-col gap-3">
+<div class="w-full h-24 rounded bg-primary"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Primary</p>
+<p class="font-body-md text-body-md font-bold">Terracotta</p>
+<p class="font-body-md text-body-md text-sm text-outline">#9e3d00</p>
+</div>
+</div>
+<div class="tape-effect p-4 flex flex-col gap-3">
+<div class="w-full h-24 rounded bg-secondary-container"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Secondary</p>
+<p class="font-body-md text-body-md font-bold">Cobalt</p>
+<p class="font-body-md text-body-md text-sm text-outline">#2e5bff</p>
+</div>
+</div>
+<div class="tape-effect p-4 flex flex-col gap-3">
+<div class="w-full h-24 rounded bg-tertiary-container"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Tertiary</p>
+<p class="font-body-md text-body-md font-bold">Olive</p>
+<p class="font-body-md text-body-md text-sm text-outline">#657c3e</p>
+</div>
+</div>
+<div class="tape-effect p-4 flex flex-col gap-3">
+<div class="w-full h-24 rounded bg-surface-container-high"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Accent</p>
+<p class="font-body-md text-body-md font-bold">Blush</p>
+<p class="font-body-md text-body-md text-sm text-outline">#fce3da</p>
+</div>
+</div>
+<div class="tape-effect p-4 flex flex-col gap-3">
+<div class="w-full h-24 rounded bg-inverse-surface"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Neutral</p>
+<p class="font-body-md text-body-md font-bold">Deep Forest</p>
+<p class="font-body-md text-body-md text-sm text-outline">#3c2d27</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Core Tokens: Typography -->
+<section class="flex flex-col gap-6 relative mt-8">
+<div class="absolute -left-12 top-4 w-8 h-8 rounded-full border-2 border-primary/20 flex items-center justify-center text-primary/40 font-bold hidden lg:flex">02</div>
+<h2 class="font-title-md text-title-md text-on-background border-b border-outline-variant pb-2 inline-block">Core Tokens: Typography</h2>
+<div class="tape-effect p-8 flex flex-col gap-8 bg-surface-bright">
+<div class="tape-strip"></div>
+<div class="grid md:grid-cols-3 gap-8 items-end">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Display (H1) - Bricolage Grotesque</p>
+<p class="font-display-xl text-display-xl text-on-background">Aa</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Headline (H2) - EB Garamond</p>
+<p class="font-headline-lg text-headline-lg text-on-background">Aa</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Body - Manrope</p>
+<p class="font-title-md text-title-md text-on-background">Aa Bb Cc</p>
+</div>
+</div>
+<hr class="border-outline-variant/30"/>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-4 max-w-2xl">The typographic scale relies on the tension between the brutally heavy Bricolage display font and the elegant, refined curves of EB Garamond for reading moments.</p>
+</div>
+</div>
+</section>
+<!-- Component Library & Inspiration -->
+<section class="flex flex-col gap-6 relative mt-8">
+<div class="absolute -left-12 top-4 w-8 h-8 rounded-full border-2 border-primary/20 flex items-center justify-center text-primary/40 font-bold hidden lg:flex">03</div>
+<h2 class="font-title-md text-title-md text-on-background border-b border-outline-variant pb-2 inline-block">From Inspiration to System</h2>
+<div class="grid md:grid-cols-2 gap-8">
+<!-- Inspiration Side -->
+<div class="flex flex-col gap-4">
+<div class="tape-effect p-2 rotate-[-1deg]">
+<div class="tape-strip"></div>
+<div class="bg-cover bg-center w-full h-64 rounded-sm" data-alt="A vintage, heavily textured travel poster featuring abstract mountain ranges in deep terracotta and olive green tones, printed on rough, aged paper, displaying a bold, grounded aesthetic suitable for moodboard inspiration." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD-J6kHBMoxs4F0K74Tsv3C_VdmiBNMLNteC7I07vLblWnrZWyzTcrINIif45a4NVP8WM1dOcNRfXCk9PC-umlMiu6S3vGiehRoDm2uOWBkEQBEh1YdxhTwdNGzaRvMHIL26ppIsgbFUq4hFNvXUB5SX1gwz0WcrPDd4zrsn6rq8wisFtSBaQpN1dxfGcNI_SDXSQ9802wTpNDS-WeDhrD7_uQNLMBXWfxybyXHov5DazN-pssE07FT')"></div>
+<p class="font-label-sm text-label-sm text-center py-2 text-on-surface-variant handwritten">Ref: "ROAM" Texture</p>
+</div>
+</div>
+<!-- Translation Side (Components) -->
+<div class="flex flex-col gap-6 justify-center">
+<div class="bg-surface-container p-6 rounded-xl border border-outline-variant/50 flex flex-col gap-4 shadow-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full pointer-events-none"></div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Translated Component</p>
+<h3 class="font-title-md text-title-md">Primary Action Button</h3>
+<div class="flex gap-4 items-center">
+<button class="bg-primary text-on-primary px-8 py-3 rounded font-body-md text-body-md font-bold hover:bg-primary/90 transition-all flex items-center gap-2 active:scale-95 shadow-[2px_2px_0_0_rgba(0,0,0,0.1)]">
+                                        Book Journey <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<p class="font-body-md text-body-md text-sm text-on-surface-variant mt-2">Notice the solid drop shadow and generous padding reflecting the 'hefty' brand mandate.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Photography Direction -->
+<section class="flex flex-col gap-6 relative mt-8">
+<div class="absolute -left-12 top-4 w-8 h-8 rounded-full border-2 border-primary/20 flex items-center justify-center text-primary/40 font-bold hidden lg:flex">04</div>
+<h2 class="font-title-md text-title-md text-on-background border-b border-outline-variant pb-2 inline-block">Photography Direction</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="tape-effect p-2 rotate-[1deg]">
+<div class="bg-cover bg-center w-full h-48 rounded-sm" data-alt="A candid, medium shot of a person sitting outdoors in natural, golden hour sunlight, laughing. The image is warm, human-centric, and grounded, featuring soft natural lighting and earthy tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDOMlgmxEwJ_R886Wrcn4sdseNQ9mdnaXaRhJCoExBEnr3Py216cQefL9QhmxaVyfNfaKSEhi4TwvZGDmUM2a7fOP_hu_ofSO4Ho1vD0xhzb8V6Kz599_DG8jM2IsK5prq-lkkcph8GF2ygNL9WmX5JtlzV2Nz_uvIO36T-SXBWGA57akRzJR_rCMS7xmMdarz3dpLnfkwnalWOsjJlAd-NJilz3-Be0SsbP5k-8uRhRZxygEeUg5xu')"></div>
+<p class="font-label-sm text-label-sm text-center py-2 text-on-surface-variant">Human Touch</p>
+</div>
+<div class="tape-effect p-2 rotate-[-2deg]">
+<div class="bg-cover bg-center w-full h-48 rounded-sm" data-alt="A striking, expansive landscape photograph of layered mountain ridges fading into the distance. The color palette emphasizes bold terracotta earth tones and deep forest greens, establishing a grounded, natural mood." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAoCXsFHAg2T7ewQJXHmxPJCGp1wLt1-vXw2r3rXfPx68bUVV1qUSRbZ-xqBHNp5RSJ0j41D_qOqRTJNRiF0l-kaxHvhWtiZ_4RUcqK_KlURbjY-AScsAMHIwa-C2wHSXWrMauM0JYwa7otZbIYYRQB3UVr20Qf3yKaI8z3QhAVuD0qsP4iFdrYP1L_c0t3IOk0o_AV7KCro6zowSvLRs7lQv0NC6x5ouZ4yJPOEgkJP-2K-DwFoU3h')"></div>
+<p class="font-label-sm text-label-sm text-center py-2 text-on-surface-variant">Bold Landscapes</p>
+</div>
+<div class="tape-effect p-2 rotate-[0.5deg]">
+<div class="bg-cover bg-center w-full h-48 rounded-sm" data-alt="A close-up, detailed macro shot of rough, textured natural stone or pottery. The lighting highlights the tactile materiality of the surface, fitting perfectly into a contemporary digital studio aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD4MOKpK_vQ0SeGL-UcS8OvMyiiyCVznAJFMxiDNSu_xmUiHlmpvHn96FqzFp4GhGP53B6RwDk2TZFrSfA3g6h7iBX3OvOzj56QAkx3EpdYOVTE9F1qe77ln7vp6ItfJtJ1JZnVCPqZLtrgMVNffWsZOXxuWfL5b9xy6RTlT9ODZlu2N6nbtxNB-yRybgVBgbrgCXW76TGOSP8OyFc2FtmC9-EjnuQVNi8CFMortLMKt76-t3cgzRxu')"></div>
+<p class="font-label-sm text-label-sm text-center py-2 text-on-surface-variant">Tactile Materiality</p>
+</div>
+</div>
+</section>
+<!-- Applied System -->
+<section class="flex flex-col gap-6 relative mt-8 pb-16">
+<div class="absolute -left-12 top-4 w-8 h-8 rounded-full border-2 border-primary/20 flex items-center justify-center text-primary/40 font-bold hidden lg:flex">05</div>
+<h2 class="font-title-md text-title-md text-on-background border-b border-outline-variant pb-2 inline-block">Applied System</h2>
+<div class="bg-surface-container-highest border border-outline-variant rounded-xl p-8 flex justify-center overflow-hidden relative">
+<!-- Decorative motif -->
+<div class="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 100% 0%, theme('colors.primary') 0%, transparent 50%);"></div>
+<!-- Mockup container -->
+<div class="w-full max-w-sm bg-surface rounded-[2rem] border-8 border-inverse-surface shadow-2xl relative overflow-hidden flex flex-col h-[600px]">
+<!-- App Header -->
+<div class="p-6 bg-surface-container-low flex justify-between items-center z-10">
+<span class="font-display-xl text-title-md text-primary font-bold">Wanderwell</span>
+<span class="material-symbols-outlined text-on-surface">menu</span>
+</div>
+<!-- App Content -->
+<div class="flex-1 overflow-y-auto pb-6">
+<div class="bg-cover bg-center w-full h-64 relative rounded-b-xl" data-alt="A beautiful, vibrant photo of a dense green forest canopy viewed from above, bathed in warm sunlight, serving as a hero image for a mobile application interface." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCALCNsgppoJ17yxYzS9hCBPfoJyXLUw2Lo8ECQ7mOwiTXTH4mgmtLzMnS94Icq3XGar-h4dfkKf2C2iFQfPrr2KBP5y83v71iQbbodAQT44yDW2Qu79WRa-r9E_jDSAN7O4GjlLt9wkQMKGhR0MxkMvoXZyZQpgszu1Lv5_2R3uXACu6pyKxKMDD8Q_JDcvZ4Se8b3dHQCYnlOkPzw4uxgC2eZ-GMRqrmZqQhDPp9a2Qmd-dOfZGjo')">
+<div class="absolute bottom-4 left-4 bg-surface/90 backdrop-blur px-3 py-1 rounded font-label-sm text-label-sm text-primary">Featured</div>
+</div>
+<div class="p-6 flex flex-col gap-4">
+<h3 class="font-headline-lg text-headline-lg-mobile text-on-background">Explore the Redwood Trail</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">A 4-day immersive journey through ancient giants. Ground yourself in nature.</p>
+<div class="flex gap-2 mt-2">
+<span class="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full font-label-sm text-label-sm">Moderate</span>
+<span class="bg-surface-container text-on-surface px-3 py-1 rounded-full font-label-sm text-label-sm">4 Days</span>
+</div>
+<button class="w-full bg-primary text-on-primary py-4 rounded-lg font-body-md text-body-md font-bold mt-4 shadow-[0_4px_0_0_theme('colors.on-primary-fixed-variant')] active:translate-y-1 active:shadow-none transition-all">
+                                        View Details
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Panel: System Summary -->
+<aside class="w-full xl:w-80 flex-shrink-0">
+<div class="sticky top-24 tape-effect p-6 flex flex-col gap-6 bg-surface-bright">
+<div class="tape-strip"></div>
+<div>
+<h3 class="font-title-md text-title-md text-on-background mb-2">System Status</h3>
+<div class="flex items-center gap-2 text-tertiary">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span class="font-label-sm text-label-sm uppercase">Active / In Sync</span>
+</div>
+</div>
+<div class="flex flex-col gap-3 pt-4 border-t border-outline-variant/30">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Export Options</p>
+<button class="w-full bg-surface-container border border-outline-variant text-on-surface py-3 px-4 rounded flex items-center justify-between hover:bg-surface-variant transition-colors group">
+<span class="font-body-md text-body-md font-bold">Sync to Figma</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">sync</span>
+</button>
+<button class="w-full bg-surface-container border border-outline-variant text-on-surface py-3 px-4 rounded flex items-center justify-between hover:bg-surface-variant transition-colors group">
+<span class="font-body-md text-body-md font-bold">Download Brand Kit</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">download</span>
+</button>
+<button class="w-full bg-surface-container border border-outline-variant text-on-surface py-3 px-4 rounded flex items-center justify-between hover:bg-surface-variant transition-colors group">
+<span class="font-body-md text-body-md font-bold">View Documentation</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">menu_book</span>
+</button>
+</div>
+<div class="pt-4 border-t border-outline-variant/30">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Recent Updates</p>
+<ul class="flex flex-col gap-3 font-body-md text-body-md text-sm text-on-surface">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary mt-0.5">check_circle</span>
+<span>Updated secondary button padding to 24px.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-[16px] text-tertiary mt-0.5">check_circle</span>
+<span>Added new 'Blush' background token.</span>
+</li>
+</ul>
+</div>
+</div>
+</aside>
+</main>
+</div>
+</body></html>
