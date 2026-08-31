@@ -18,6 +18,7 @@ export function App() { return <Routes><Route path="/" element={<ProjectHome />}
 function ProjectHome() {
   const projects = useProjectStore((state) => state.projects)
   const createProject = useProjectStore((state) => state.createProject)
+  const updateProject = useProjectStore((state) => state.updateProject)
   const duplicateProject = useProjectStore((state) => state.duplicateProject)
   const deleteProject = useProjectStore((state) => state.deleteProject)
   const navigate = useNavigate()
@@ -26,12 +27,21 @@ function ProjectHome() {
   const [brief, setBrief] = useState('')
   const [avoid, setAvoid] = useState('')
   const [error, setError] = useState('')
+  const [renameId, setRenameId] = useState<string | null>(null)
+  const [renameValue, setRenameValue] = useState('')
+  const [renameError, setRenameError] = useState('')
   const create = () => {
     if (!name.trim() || !brief.trim()) { setError('Project name and creative brief are required.'); return }
     const project = createProject({ name, brief, avoid: avoid.split(',').map((item) => item.trim()).filter(Boolean) })
     navigate(`/project/${project.id}/explore`)
   }
-  return <main className="project-home"><header><a className="brand" href="/">MOOD</a><p className="eyebrow">LOCAL CREATIVE WORKSPACE</p><h1>Your projects</h1><p>Open a working board or start with a fresh creative brief.</p></header><section className="project-grid">{projects.map((project) => <article className="project-card tape" key={project.id}><p className="eyebrow">{project.isDemo ? 'DEMO PROJECT' : 'PROJECT'}</p><h2>{project.title}</h2><p>{project.brief}</p><div><button className="solid" onClick={() => navigate(`/project/${project.id}/explore`)}>Open project →</button><button className="quiet" onClick={() => { const duplicate = duplicateProject(project.id); if (duplicate) navigate(`/project/${duplicate.id}/explore`) }}>Duplicate</button>{!project.isDemo && <button className="text-danger" onClick={() => { if (window.confirm(`Delete ${project.title}?`)) deleteProject(project.id) }}>Delete</button>}</div></article>)}<button className="new-project-card" onClick={() => setOpen(true)}>＋<span>New project</span></button></section>{open && <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="new-project-title"><button className="close" onClick={() => setOpen(false)}>×</button><p className="eyebrow cobalt">NEW PROJECT</p><h2 id="new-project-title">Start with a point of view</h2><label>Project name<input value={name} onChange={(event) => setName(event.target.value)} /></label><label>Creative brief<textarea value={brief} onChange={(event) => setBrief(event.target.value)} /></label><label>What should it not feel like? <small>Optional, comma-separated</small><input value={avoid} onChange={(event) => setAvoid(event.target.value)} /></label>{error && <p className="form-error">{error}</p>}<button className="solid" onClick={create}>Create project →</button></section></div>}</main>
+  const rename = () => {
+    if (!renameId || !renameValue.trim()) { setRenameError('Project name is required.'); return }
+    updateProject(renameId, { title: renameValue.trim() })
+    setRenameId(null)
+    setRenameError('')
+  }
+  return <main className="project-home"><header><a className="brand" href="/">MOOD</a><p className="eyebrow">LOCAL CREATIVE WORKSPACE</p><h1>Your projects</h1><p>Open a working board or start with a fresh creative brief.</p></header><section className="project-grid">{projects.map((project) => <article className="project-card tape" key={project.id}><p className="eyebrow">{project.isDemo ? 'DEMO PROJECT' : 'PROJECT'}</p><h2>{project.title}</h2><p>{project.brief}</p><div><button className="solid" onClick={() => navigate(`/project/${project.id}/explore`)}>Open project →</button>{!project.isDemo && <><button className="quiet" onClick={() => { setRenameId(project.id); setRenameValue(project.title); setRenameError('') }}>Rename</button><button className="quiet" onClick={() => { const duplicate = duplicateProject(project.id); if (duplicate) navigate(`/project/${duplicate.id}/explore`) }}>Duplicate</button><button className="text-danger" onClick={() => { if (window.confirm(`Delete ${project.title}?`)) deleteProject(project.id) }}>Delete</button></>}</div></article>)}<button className="new-project-card" onClick={() => setOpen(true)}>＋<span>New project</span></button></section>{open && <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="new-project-title"><button className="close" onClick={() => setOpen(false)}>×</button><p className="eyebrow cobalt">NEW PROJECT</p><h2 id="new-project-title">Start with a point of view</h2><label>Project name<input value={name} onChange={(event) => setName(event.target.value)} /></label><label>Creative brief<textarea value={brief} onChange={(event) => setBrief(event.target.value)} /></label><label>What should it not feel like? <small>Optional, comma-separated</small><input value={avoid} onChange={(event) => setAvoid(event.target.value)} /></label>{error && <p className="form-error">{error}</p>}<button className="solid" onClick={create}>Create project →</button></section></div>}{renameId && <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="rename-project-title"><button className="close" onClick={() => setRenameId(null)}>×</button><p className="eyebrow cobalt">RENAME PROJECT</p><h2 id="rename-project-title">Give this project a new name.</h2><label>Project name<input autoFocus value={renameValue} onChange={(event) => setRenameValue(event.target.value)} onKeyDown={(event) => { if (event.key === 'Enter') rename() }} /></label>{renameError && <p className="form-error">{renameError}</p>}<button className="solid" onClick={rename}>Save name →</button></section></div>}</main>
 }
 
 function Workspace({ phase }: { phase: Phase }) {
