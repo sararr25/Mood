@@ -5,8 +5,18 @@ import { wanderwellDemo } from '../data/wanderwellDemo'
 
 type DirectionPatch = Partial<Pick<Direction, 'title' | 'statement' | 'descriptors' | 'referenceIds' | 'palette' | 'typography' | 'approved'>>
 type DecisionPatch = Partial<Pick<DesignDecision, 'category' | 'statement' | 'supportingReferenceIds' | 'status'>>
+type ProjectInput = { name: string; brief: string; avoid?: string[] }
 type ProjectStore = {
+  projects: Project[]
+  activeProjectId: string | null
+  /** Compatibility projection of the active item; persisted project data lives in projects. */
   project: Project
+  createProject: (input: ProjectInput) => Project
+  openProject: (id: string) => boolean
+  updateProject: (id: string, patch: Partial<Pick<Project, 'title' | 'brief' | 'avoid'>>) => boolean
+  duplicateProject: (id: string) => Project | null
+  deleteProject: (id: string) => boolean
+  resetDemoProject: () => void
   setPhase: (phase: Phase) => void
   keepReference: (id: string) => void
   rejectReference: (id: string) => void
@@ -36,125 +46,89 @@ type ProjectStore = {
   undoSuggestion: (id: string) => void
   addSuggestion: (suggestion: AgentSuggestion) => void
   ignoreCritique: (id: string) => void
-  resetDemo: () => void
 }
 
-const stamp = (project: Project, label: string, actor: CreatedBy = 'human'): Project => ({
-  ...project,
-  projectVersion: project.projectVersion + 1,
-  activity: [{ id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, label, actor, at: new Date().toISOString() }, ...project.activity].slice(0, 30)
+const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value)) as T
+const id = (prefix: string) => `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+export const getActiveProject = (state: Pick<ProjectStore, 'projects' | 'activeProjectId'>): Project | null => state.projects.find((project) => project.id === state.activeProjectId) ?? null
+
+export const createEmptyProject = ({ name, brief, avoid = [] }: ProjectInput): Project => ({
+  id: id('project'), title: name.trim(), brief: brief.trim(), avoid, currentPhase: 'explore', projectVersion: 1,
+  references: [], referenceOrder: [], referenceGroups: [], directions: [], selectedDirectionId: null, designDecisions: [], ignoredCritiqueIds: [], suggestions: [], activity: [{ id: id('activity'), label: 'Project created', actor: 'human', at: new Date().toISOString() }],
+  designSystem: { mood: ['Clear', 'Intentional', 'Human'], colors: [{ id: 'primary', name: 'Ink', value: '#251913', role: 'Primary', description: 'Primary type and action.' }, { id: 'secondary', name: 'Cobalt', value: '#0040E0', role: 'Secondary', description: 'Interaction accent.' }, { id: 'tertiary', name: 'Olive', value: '#4D6328', role: 'Tertiary', description: 'Organic accent.' }, { id: 'surface', name: 'Paper', value: '#FFF8F6', role: 'Surface', description: 'Primary surface.' }, { id: 'neutral', name: 'Clay', value: '#E0C0B2', role: 'Neutral', description: 'Quiet support.' }], typography: [{ id: 'display', role: 'Display', family: 'Bricolage Grotesque', weight: 800, size: '64px', lineHeight: '1.1' }, { id: 'head', role: 'Heading', family: 'EB Garamond', weight: 600, size: '48px', lineHeight: '1.2' }, { id: 'body', role: 'Body', family: 'Manrope', weight: 400, size: '16px', lineHeight: '1.6' }], shapeLanguage: 'Structured forms with generous space and clear hierarchy.', photography: 'Honest, useful imagery with a human point of view.', graphicLanguage: 'Simple annotations and confident contrast.', principles: ['Start with a clear point of view', 'Make every contrast purposeful', 'Keep the system human'] }
 })
 
-const mutate = (set: (partial: ProjectStore | Partial<ProjectStore> | ((state: ProjectStore) => ProjectStore | Partial<ProjectStore>), replace?: false) => void, label: string, fn: (project: Project) => Project, actor: CreatedBy = 'human') => {
-  set(({ project }) => ({ project: stamp(fn(project), label, actor) }))
-}
-
+const stamp = (project: Project, label: string, actor: CreatedBy = 'human'): Project => ({ ...project, projectVersion: project.projectVersion + 1, activity: [{ id: id('activity'), label, actor, at: new Date().toISOString() }, ...project.activity].slice(0, 30) })
 const selected = (project: Project) => project.directions.find((direction) => direction.id === project.selectedDirectionId)
 const withSelected = (project: Project, fn: (direction: Direction) => Direction): Project => ({ ...project, directions: project.directions.map((direction) => direction.id === project.selectedDirectionId ? fn(direction) : direction) })
-const derivedSystem = (project: Project, direction = selected(project)): Project => {
+const deriveSystem = (project: Project): Project => {
+  const direction = selected(project)
   if (!direction) return project
   const approved = project.designDecisions.filter((decision) => decision.status === 'approved' || decision.locked)
-  return {
-    ...project,
-    designSystem: {
-      ...project.designSystem,
-      mood: direction.descriptors,
-      colors: project.designSystem.colors.map((token, index) => direction.palette[index] ? { ...token, value: direction.palette[index] } : token),
-      typography: direction.typography.map((token) => ({ ...token })),
-      principles: Array.from(new Set([...project.designSystem.principles, ...approved.map((decision) => decision.statement)]))
-    }
-  }
+  return { ...project, designSystem: { ...project.designSystem, mood: direction.descriptors, colors: project.designSystem.colors.map((token, index) => direction.palette[index] ? { ...token, value: direction.palette[index] } : token), typography: direction.typography.map((token) => ({ ...token })), principles: Array.from(new Set([...project.designSystem.principles, ...approved.map((decision) => decision.statement)])) } }
 }
 
 const applyMutation = (project: Project, mutation: SuggestionMutation): { project: Project; undo: SuggestionMutation } => {
   switch (mutation.type) {
-    case 'add_references':
-      return { project: { ...project, references: [...project.references, ...mutation.references.filter((reference) => !project.references.some((item) => item.id === reference.id))], referenceOrder: [...project.referenceOrder, ...mutation.references.map((reference) => reference.id).filter((id) => !project.referenceOrder.includes(id))] }, undo: { type: 'add_references', references: mutation.references } }
-    case 'update_palette': {
-      const prior = selected(project)?.palette ?? []
-      return { project: derivedSystem(withSelected(project, (direction) => ({ ...direction, palette: mutation.palette }))), undo: { type: 'update_palette', palette: prior } }
-    }
-    case 'create_decision':
-      return { project: { ...project, designDecisions: project.designDecisions.some((item) => item.id === mutation.decision.id) ? project.designDecisions : [...project.designDecisions, mutation.decision] }, undo: { type: 'create_decision', decision: mutation.decision } }
-    case 'update_typography': {
-      const prior = project.designSystem.typography.find((token) => token.id === mutation.tokenId)
-      return { project: { ...project, designSystem: { ...project.designSystem, typography: project.designSystem.typography.map((token) => token.id === mutation.tokenId ? { ...token, ...mutation.patch } : token) } }, undo: { type: 'update_typography', tokenId: mutation.tokenId, patch: prior ?? {} } }
-    }
-    case 'add_principle':
-      return { project: { ...project, designSystem: { ...project.designSystem, principles: Array.from(new Set([...project.designSystem.principles, mutation.principle])) } }, undo: { type: 'add_principle', principle: mutation.principle } }
+    case 'add_references': return { project: { ...project, references: [...project.references, ...mutation.references.filter((reference) => !project.references.some((item) => item.id === reference.id))], referenceOrder: [...project.referenceOrder, ...mutation.references.map((reference) => reference.id).filter((referenceId) => !project.referenceOrder.includes(referenceId))] }, undo: mutation }
+    case 'update_palette': return { project: deriveSystem(withSelected(project, (direction) => ({ ...direction, palette: mutation.palette }))), undo: { type: 'update_palette', palette: selected(project)?.palette ?? [] } }
+    case 'create_decision': return { project: { ...project, designDecisions: project.designDecisions.some((decision) => decision.id === mutation.decision.id) ? project.designDecisions : [...project.designDecisions, mutation.decision] }, undo: mutation }
+    case 'update_typography': return { project: { ...project, designSystem: { ...project.designSystem, typography: project.designSystem.typography.map((token) => token.id === mutation.tokenId ? { ...token, ...mutation.patch } : token) } }, undo: { type: 'update_typography', tokenId: mutation.tokenId, patch: project.designSystem.typography.find((token) => token.id === mutation.tokenId) ?? {} } }
+    case 'add_principle': return { project: { ...project, designSystem: { ...project.designSystem, principles: Array.from(new Set([...project.designSystem.principles, mutation.principle])) } }, undo: mutation }
   }
 }
-
 const undoMutation = (project: Project, mutation: SuggestionMutation): Project => {
   switch (mutation.type) {
-    case 'add_references': return { ...project, references: project.references.filter((item) => !mutation.references.some((reference) => reference.id === item.id)), referenceOrder: project.referenceOrder.filter((id) => !mutation.references.some((reference) => reference.id === id)) }
-    case 'update_palette': return derivedSystem(withSelected(project, (direction) => ({ ...direction, palette: mutation.palette })))
+    case 'add_references': return { ...project, references: project.references.filter((item) => !mutation.references.some((reference) => reference.id === item.id)), referenceOrder: project.referenceOrder.filter((referenceId) => !mutation.references.some((reference) => reference.id === referenceId)) }
+    case 'update_palette': return deriveSystem(withSelected(project, (direction) => ({ ...direction, palette: mutation.palette })))
     case 'create_decision': return { ...project, designDecisions: project.designDecisions.filter((item) => item.id !== mutation.decision.id || item.locked) }
     case 'update_typography': return { ...project, designSystem: { ...project.designSystem, typography: project.designSystem.typography.map((token) => token.id === mutation.tokenId ? { ...token, ...mutation.patch } : token) } }
     case 'add_principle': return { ...project, designSystem: { ...project.designSystem, principles: project.designSystem.principles.filter((principle) => principle !== mutation.principle) } }
   }
 }
 
-export const useProjectStore = create<ProjectStore>()(persist((set) => ({
-  project: wanderwellDemo,
-  setPhase: (phase) => mutate(set, `Moved to ${phase} phase`, (project) => ({ ...project, currentPhase: phase })),
-  keepReference: (id) => mutate(set, 'Kept a reference', (project) => ({ ...project, references: project.references.map((reference) => reference.id === id ? { ...reference, status: 'kept' } : reference) })),
-  rejectReference: (id) => mutate(set, 'Rejected a reference', (project) => ({ ...project, references: project.references.map((reference) => reference.id === id ? { ...reference, status: 'rejected' } : reference) })),
-  restoreReference: (id) => mutate(set, 'Restored a reference', (project) => ({ ...project, references: project.references.map((reference) => reference.id === id ? { ...reference, status: 'neutral' } : reference) })),
-  removeReference: (id) => mutate(set, 'Removed a reference', (project) => ({ ...project, references: project.references.filter((reference) => reference.id !== id), referenceOrder: project.referenceOrder.filter((referenceId) => referenceId !== id), directions: project.directions.map((direction) => ({ ...direction, referenceIds: direction.referenceIds.filter((referenceId) => referenceId !== id) })) })),
-  reorderReferences: (activeId, overId) => mutate(set, 'Reordered references', (project) => {
-    const order = project.referenceOrder.length ? [...project.referenceOrder] : project.references.map((reference) => reference.id)
-    const oldIndex = order.indexOf(activeId); const newIndex = order.indexOf(overId)
-    if (oldIndex < 0 || newIndex < 0 || oldIndex === newIndex) return project
-    order.splice(oldIndex, 1); order.splice(newIndex, 0, activeId)
-    return { ...project, referenceOrder: order }
-  }),
-  addReferenceNote: (id, notes) => mutate(set, 'Added a reference note', (project) => ({ ...project, references: project.references.map((reference) => reference.id === id ? { ...reference, notes } : reference) })),
-  addReference: (reference, actor = 'human') => mutate(set, 'Added a reference', (project) => ({ ...project, references: project.references.some((item) => item.id === reference.id) ? project.references : [...project.references, { ...reference, createdBy: actor }], referenceOrder: project.referenceOrder.includes(reference.id) ? project.referenceOrder : [...project.referenceOrder, reference.id] }), actor),
-  createDirection: (direction) => mutate(set, 'Created a direction', (project) => ({ ...project, directions: [...project.directions, direction], selectedDirectionId: direction.id }), direction.createdBy),
-  updateDirection: (id, patch) => mutate(set, 'Updated a direction', (project) => derivedSystem({ ...project, directions: project.directions.map((direction) => direction.id === id ? { ...direction, ...patch } : direction) })),
-  selectDirection: (id) => mutate(set, 'Selected a direction', (project) => derivedSystem({ ...project, selectedDirectionId: project.directions.some((direction) => direction.id === id) ? id : project.selectedDirectionId })),
-  approveDirection: (id) => mutate(set, 'Approved a direction', (project) => derivedSystem({ ...project, directions: project.directions.map((direction) => ({ ...direction, approved: direction.id === id })), selectedDirectionId: id })),
-  updateStatement: (statement) => mutate(set, 'Edited direction statement', (project) => derivedSystem(withSelected(project, (direction) => ({ ...direction, statement })))),
-  createDecision: (decision) => mutate(set, 'Created a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.some((item) => item.id === decision.id) ? project.designDecisions : [...project.designDecisions, decision] }), decision.createdBy),
-  updateDecision: (id, patch) => {
-    const existing = useProjectStore.getState().project.designDecisions.find((decision) => decision.id === id)
-    if (existing?.locked) return { success: false, reason: 'Locked human decisions cannot be overwritten.' }
-    mutate(set, 'Updated a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.map((decision) => decision.id === id ? { ...decision, ...patch } : decision) }))
-    return { success: true }
-  },
-  lockDecision: (id) => mutate(set, 'Locked a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.map((decision) => decision.id === id ? { ...decision, locked: true, status: 'approved' } : decision) })),
-  rejectDecision: (id) => {
-    const existing = useProjectStore.getState().project.designDecisions.find((decision) => decision.id === id)
-    if (existing?.locked) return
-    mutate(set, 'Rejected a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.map((decision) => decision.id === id ? { ...decision, status: 'rejected' } : decision) }))
-  },
-  removeDecision: (id) => mutate(set, 'Removed a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.filter((decision) => decision.id !== id || decision.locked) })),
-  updatePalette: (palette) => mutate(set, 'Updated the direction palette', (project) => derivedSystem(withSelected(project, (direction) => ({ ...direction, palette })))),
-  updateTypographyWeight: (id, weight) => mutate(set, 'Updated typography weight', (project) => ({ ...project, designSystem: { ...project.designSystem, typography: project.designSystem.typography.map((token) => token.id === id ? { ...token, weight } : token) } })),
-  setDesignSystem: (designSystem) => mutate(set, 'Set design system', (project) => ({ ...project, designSystem })),
-  updateColorToken: (id, patch) => mutate(set, 'Updated a color token', (project) => ({ ...project, designSystem: { ...project.designSystem, colors: project.designSystem.colors.map((token) => token.id === id ? { ...token, ...patch } : token) } })),
-  updateTypographyToken: (id, patch) => mutate(set, 'Updated a typography token', (project) => ({ ...project, designSystem: { ...project.designSystem, typography: project.designSystem.typography.map((token) => token.id === id ? { ...token, ...patch } : token) } })),
-  updateDesignPrinciple: (index, principle) => mutate(set, 'Updated a design principle', (project) => ({ ...project, designSystem: { ...project.designSystem, principles: project.designSystem.principles.map((item, itemIndex) => itemIndex === index ? principle : item) } })),
-  applySuggestion: (id) => {
-    const suggestion = useProjectStore.getState().project.suggestions.find((item) => item.id === id)
-    if (!suggestion || suggestion.status !== 'proposed') return { success: false, reason: 'Suggestion is no longer proposed.' }
-    mutate(set, `Applied suggestion: ${suggestion.title}`, (project) => {
-      const current = project.suggestions.find((item) => item.id === id)
-      if (!current || current.status !== 'proposed') return project
-      const applied = applyMutation(project, current.mutation)
-      return { ...applied.project, suggestions: applied.project.suggestions.map((item) => item.id === id ? { ...item, status: 'applied', undo: applied.undo } : item) }
-    }, 'agent')
-    return { success: true }
-  },
-  rejectSuggestion: (id) => mutate(set, 'Rejected an agent suggestion', (project) => ({ ...project, suggestions: project.suggestions.map((suggestion) => suggestion.id === id ? { ...suggestion, status: 'rejected' } : suggestion) })),
-  undoSuggestion: (id) => mutate(set, 'Undid an agent suggestion', (project) => {
-    const suggestion = project.suggestions.find((item) => item.id === id)
-    if (!suggestion?.undo || suggestion.status !== 'applied') return project
-    const reverted = undoMutation(project, suggestion.undo)
-    return { ...reverted, suggestions: reverted.suggestions.map((item) => item.id === id ? { ...item, status: 'proposed', undo: undefined } : item) }
-  }),
-  addSuggestion: (suggestion) => mutate(set, 'Created an agent suggestion', (project) => ({ ...project, suggestions: [...project.suggestions, suggestion] }), 'agent'),
-  ignoreCritique: (id) => mutate(set, 'Ignored a critique', (project) => ({ ...project, ignoredCritiqueIds: Array.from(new Set([...project.ignoredCritiqueIds, id])) })),
-  resetDemo: () => set({ project: wanderwellDemo })
-}), { name: 'mood-project-v2', version: 2 }))
+export const useProjectStore = create<ProjectStore>()(persist((set, get) => {
+  const mutateActive = (label: string, fn: (project: Project) => Project, actor: CreatedBy = 'human') => set((state) => {
+    const active = getActiveProject(state); if (!active) return state
+    const next = stamp(fn(active), label, actor)
+    return { projects: state.projects.map((project) => project.id === active.id ? next : project), project: next }
+  })
+  return {
+    projects: [clone(wanderwellDemo)], activeProjectId: wanderwellDemo.id, project: clone(wanderwellDemo),
+    createProject: (input) => { const project = createEmptyProject(input); set((state) => ({ projects: [...state.projects, project], activeProjectId: project.id, project })); return project },
+    openProject: (projectId) => { const project = get().projects.find((item) => item.id === projectId); if (!project) return false; set({ activeProjectId: projectId, project }); return true },
+    updateProject: (projectId, patch) => { if (!get().projects.some((project) => project.id === projectId)) return false; set((state) => { const updated = stamp({ ...(state.projects.find((item) => item.id === projectId)!), ...patch }, 'Updated project'); return { projects: state.projects.map((item) => item.id === projectId ? updated : item), project: state.activeProjectId === projectId ? updated : state.project } }); return true },
+    duplicateProject: (projectId) => { const source = get().projects.find((project) => project.id === projectId); if (!source) return null; const duplicate = { ...clone(source), id: id('project'), title: `${source.title} copy`, isDemo: false, projectVersion: 1, activity: [{ id: id('activity'), label: `Duplicated from ${source.title}`, actor: 'human' as const, at: new Date().toISOString() }] }; set((state) => ({ projects: [...state.projects, duplicate], activeProjectId: duplicate.id, project: duplicate })); return duplicate },
+    deleteProject: (projectId) => { const target = get().projects.find((project) => project.id === projectId); if (!target || target.isDemo) return false; set((state) => { const projects = state.projects.filter((project) => project.id !== projectId); const activeProjectId = state.activeProjectId === projectId ? projects[0]?.id ?? null : state.activeProjectId; return { projects, activeProjectId, project: projects.find((item) => item.id === activeProjectId) ?? clone(wanderwellDemo) } }); return true },
+    resetDemoProject: () => set((state) => { const demo = clone(wanderwellDemo); return { projects: state.projects.map((project) => project.id === wanderwellDemo.id ? demo : project), activeProjectId: wanderwellDemo.id, project: demo } }),
+    setPhase: (phase) => mutateActive(`Moved to ${phase} phase`, (project) => ({ ...project, currentPhase: phase })),
+    keepReference: (referenceId) => mutateActive('Kept a reference', (project) => ({ ...project, references: project.references.map((reference) => reference.id === referenceId ? { ...reference, status: 'kept' } : reference) })),
+    rejectReference: (referenceId) => mutateActive('Rejected a reference', (project) => ({ ...project, references: project.references.map((reference) => reference.id === referenceId ? { ...reference, status: 'rejected' } : reference) })),
+    restoreReference: (referenceId) => mutateActive('Restored a reference', (project) => ({ ...project, references: project.references.map((reference) => reference.id === referenceId ? { ...reference, status: 'neutral' } : reference) })),
+    removeReference: (referenceId) => mutateActive('Removed a reference', (project) => ({ ...project, references: project.references.filter((reference) => reference.id !== referenceId), referenceOrder: project.referenceOrder.filter((id) => id !== referenceId), directions: project.directions.map((direction) => ({ ...direction, referenceIds: direction.referenceIds.filter((id) => id !== referenceId) })) })),
+    reorderReferences: (activeId, overId) => mutateActive('Reordered references', (project) => { const order = project.referenceOrder.length ? [...project.referenceOrder] : project.references.map((reference) => reference.id); const from = order.indexOf(activeId); const to = order.indexOf(overId); if (from < 0 || to < 0) return project; order.splice(from, 1); order.splice(to, 0, activeId); return { ...project, referenceOrder: order } }),
+    addReferenceNote: (referenceId, notes) => mutateActive('Added a reference note', (project) => ({ ...project, references: project.references.map((reference) => reference.id === referenceId ? { ...reference, notes } : reference) })),
+    addReference: (reference, actor = 'human') => mutateActive('Added a reference', (project) => ({ ...project, references: project.references.some((item) => item.id === reference.id) ? project.references : [...project.references, { ...reference, createdBy: actor }], referenceOrder: project.referenceOrder.includes(reference.id) ? project.referenceOrder : [...project.referenceOrder, reference.id] }), actor),
+    createDirection: (direction) => mutateActive('Created a direction', (project) => ({ ...project, directions: [...project.directions, direction], selectedDirectionId: direction.id }), direction.createdBy),
+    updateDirection: (directionId, patch) => mutateActive('Updated a direction', (project) => deriveSystem({ ...project, directions: project.directions.map((direction) => direction.id === directionId ? { ...direction, ...patch } : direction) })),
+    selectDirection: (directionId) => mutateActive('Selected a direction', (project) => deriveSystem({ ...project, selectedDirectionId: project.directions.some((direction) => direction.id === directionId) ? directionId : project.selectedDirectionId })),
+    approveDirection: (directionId) => mutateActive('Approved a direction', (project) => deriveSystem({ ...project, directions: project.directions.map((direction) => ({ ...direction, approved: direction.id === directionId })), selectedDirectionId: directionId })),
+    updateStatement: (statement) => mutateActive('Edited direction statement', (project) => deriveSystem(withSelected(project, (direction) => ({ ...direction, statement })))),
+    createDecision: (decision) => mutateActive('Created a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.some((item) => item.id === decision.id) ? project.designDecisions : [...project.designDecisions, decision] }), decision.createdBy),
+    updateDecision: (decisionId, patch) => { const current = getActiveProject(get())?.designDecisions.find((decision) => decision.id === decisionId); if (current?.locked) return { success: false, reason: 'Locked human decisions cannot be overwritten.' }; mutateActive('Updated a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.map((decision) => decision.id === decisionId ? { ...decision, ...patch } : decision) })); return { success: true } },
+    lockDecision: (decisionId) => mutateActive('Locked a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.map((decision) => decision.id === decisionId ? { ...decision, locked: true, status: 'approved' } : decision) })),
+    rejectDecision: (decisionId) => mutateActive('Rejected a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.map((decision) => decision.id === decisionId && !decision.locked ? { ...decision, status: 'rejected' } : decision) })),
+    removeDecision: (decisionId) => mutateActive('Removed a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.filter((decision) => decision.id !== decisionId || decision.locked) })),
+    updatePalette: (palette) => mutateActive('Updated the direction palette', (project) => deriveSystem(withSelected(project, (direction) => ({ ...direction, palette })))),
+    updateTypographyWeight: (tokenId, weight) => mutateActive('Updated typography weight', (project) => ({ ...project, designSystem: { ...project.designSystem, typography: project.designSystem.typography.map((token) => token.id === tokenId ? { ...token, weight } : token) } })),
+    setDesignSystem: (designSystem) => mutateActive('Set design system', (project) => ({ ...project, designSystem })),
+    updateColorToken: (tokenId, patch) => mutateActive('Updated a color token', (project) => ({ ...project, designSystem: { ...project.designSystem, colors: project.designSystem.colors.map((token) => token.id === tokenId ? { ...token, ...patch } : token) } })),
+    updateTypographyToken: (tokenId, patch) => mutateActive('Updated a typography token', (project) => ({ ...project, designSystem: { ...project.designSystem, typography: project.designSystem.typography.map((token) => token.id === tokenId ? { ...token, ...patch } : token) } })),
+    updateDesignPrinciple: (index, principle) => mutateActive('Updated a design principle', (project) => ({ ...project, designSystem: { ...project.designSystem, principles: project.designSystem.principles.map((item, itemIndex) => itemIndex === index ? principle : item) } })),
+    applySuggestion: (suggestionId) => { const suggestion = getActiveProject(get())?.suggestions.find((item) => item.id === suggestionId); if (!suggestion || suggestion.status !== 'proposed') return { success: false, reason: 'Suggestion is no longer proposed.' }; mutateActive(`Applied suggestion: ${suggestion.title}`, (project) => { const current = project.suggestions.find((item) => item.id === suggestionId); if (!current || current.status !== 'proposed') return project; const applied = applyMutation(project, current.mutation); return { ...applied.project, suggestions: applied.project.suggestions.map((item) => item.id === suggestionId ? { ...item, status: 'applied', undo: applied.undo } : item) } }, 'agent'); return { success: true } },
+    rejectSuggestion: (suggestionId) => mutateActive('Rejected an agent suggestion', (project) => ({ ...project, suggestions: project.suggestions.map((suggestion) => suggestion.id === suggestionId ? { ...suggestion, status: 'rejected' } : suggestion) })),
+    undoSuggestion: (suggestionId) => mutateActive('Undid an agent suggestion', (project) => { const suggestion = project.suggestions.find((item) => item.id === suggestionId); if (!suggestion?.undo || suggestion.status !== 'applied') return project; const reverted = undoMutation(project, suggestion.undo); return { ...reverted, suggestions: reverted.suggestions.map((item) => item.id === suggestionId ? { ...item, status: 'proposed', undo: undefined } : item) } }),
+    addSuggestion: (suggestion) => mutateActive(suggestion.origin === 'agent' ? 'Created a site-tool suggestion' : suggestion.origin === 'critique' ? 'Created a local critique suggestion' : 'Created a demo suggestion', (project) => ({ ...project, suggestions: [...project.suggestions, suggestion] }), suggestion.origin === 'agent' ? 'agent' : 'human'),
+    ignoreCritique: (critiqueId) => mutateActive('Ignored a critique', (project) => ({ ...project, ignoredCritiqueIds: Array.from(new Set([...project.ignoredCritiqueIds, critiqueId])) }))
+  }
+}, { name: 'mood-projects-v1', version: 1 }))

@@ -3,14 +3,14 @@ import type { Project } from '../core/types'
 const image = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=85`
 
 export const wanderwellDemo: Project = {
-  id: 'wanderwell', title: 'Wanderwell', brief: 'Outdoor travel brand making a return to the natural world feel personal, expressive, and ready for real adventure.', currentPhase: 'explore', projectVersion: 1, selectedDirectionId: 'bold-grounded',
+  id: 'wanderwell', title: 'Wanderwell', brief: 'Outdoor travel brand making a return to the natural world feel personal, expressive, and ready for real adventure.', avoid: ['Over-polished', 'Synthetic', 'Generic adventure'], isDemo: true, currentPhase: 'explore', projectVersion: 1, selectedDirectionId: 'bold-grounded',
   references: [
     { id: 'stone', title: 'Weathered Travertine', image: image('photo-1518005020951-eccb494ad742'), source: 'Stone Architecture', tags: ['texture', 'material'], notes: 'Ground the board with a rough, porous surface.', status: 'kept', group: 'Material / motif', extractedColors: ['#9E3D00', '#E0C0B2'], rotation: -1 },
     { id: 'interior', title: 'Soft, diffuse light', image: image('photo-1600210492486-724fe5c67fb0'), source: 'Nordic interiors', tags: ['light', 'calm'], notes: 'Natural light keeps the warmth quiet.', status: 'kept', group: 'Photography', extractedColors: ['#FFF8F6', '#4D6328'], rotation: 1 },
     { id: 'poster', title: 'Vintage Roam Poster', image: image('photo-1531058020387-3be344556be6'), source: 'Print archive', tags: ['type', 'editorial'], notes: 'A confident visual anchor with human character.', status: 'kept', group: 'Visual anchor', extractedColors: ['#013220', '#C64F00'], rotation: -2 },
     { id: 'mountain', title: 'Misty Lake Perspective', image: image('photo-1464822759023-fed622ff2c3b'), source: 'Field photography', tags: ['human', 'landscape'], notes: 'Keep people present, but not staged.', status: 'neutral', group: 'Photography', extractedColors: ['#4D6328', '#0040E0'], rotation: 2 },
     { id: 'book', title: 'Tactile research', image: image('photo-1456324504439-367cee3b3c32'), source: 'Studio desk', tags: ['process', 'material'], notes: 'Show the hand behind the exploration.', status: 'neutral', group: 'Material / motif', extractedColors: ['#E0C0B2', '#251913'], rotation: -1 },
-    { id: 'badge', title: 'Brand Badge System', image: image('photo-1526481280695-3c687fd643ed'), source: 'Trail marks', tags: ['graphic', 'shape'], notes: 'Geometric marks need a little imperfection.', status: 'kept', group: 'Graphic motif', extractedColors: ['#013220', '#C64F00'], rotation: 1 }
+    { id: 'badge', title: 'Brand Badge System', image: image('photo-1531058020387-3be344556be6'), source: 'Trail marks', tags: ['graphic', 'shape'], notes: 'Geometric marks need a little imperfection.', status: 'kept', group: 'Graphic motif', extractedColors: ['#013220', '#C64F00'], rotation: 1 }
   ],
   referenceGroups: [{ id: 'material', title: 'Material / motif', referenceIds: ['stone', 'book'] }, { id: 'photo', title: 'Photography', referenceIds: ['interior', 'mountain'] }, { id: 'anchor', title: 'Visual anchors', referenceIds: ['poster', 'badge'] }],
   referenceOrder: ['stone', 'interior', 'poster', 'mountain', 'book', 'badge'],
