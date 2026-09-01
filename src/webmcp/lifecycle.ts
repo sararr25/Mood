@@ -12,22 +12,24 @@ export type WebMcpDebugState = {
   registrationErrors: string[]
   browserTools: unknown[]
   selfTest: { ok: boolean; detail: string } | null
+  executions: Array<{ tool: string; success: boolean; beforeVersion: number; afterVersion: number; detail: string }>
 }
 
 export const useWebMcpLifecycleStore = create<WebMcpDebugState>(() => ({
   apiDetected: false, modelContextAvailable: false, registerToolAvailable: false,
   registrationState: 'unsupported', expectedToolCount: 0, registeredToolCount: 0,
-  registeredToolNames: [], registrationErrors: [], browserTools: [], selfTest: null
+  registeredToolNames: [], registrationErrors: [], browserTools: [], selfTest: null, executions: []
 }))
 
 export const webMcpLifecycle = {
   begin(expectedToolCount: number, detected: { context: boolean; registerTool: boolean }) {
-    useWebMcpLifecycleStore.setState({ apiDetected: detected.context, modelContextAvailable: detected.context, registerToolAvailable: detected.registerTool, registrationState: detected.registerTool ? 'registering' : 'unsupported', expectedToolCount, registeredToolCount: 0, registeredToolNames: [], registrationErrors: [], browserTools: [], selfTest: null })
+    useWebMcpLifecycleStore.setState({ apiDetected: detected.context, modelContextAvailable: detected.context, registerToolAvailable: detected.registerTool, registrationState: detected.registerTool ? 'registering' : 'unsupported', expectedToolCount, registeredToolCount: 0, registeredToolNames: [], registrationErrors: [], browserTools: [], selfTest: null, executions: [] })
   },
   registered(name: string) { useWebMcpLifecycleStore.setState((state) => ({ registeredToolCount: state.registeredToolCount + 1, registeredToolNames: [...state.registeredToolNames, name] })) },
   failed(name: string, error: unknown) { useWebMcpLifecycleStore.setState((state) => ({ registrationErrors: [...state.registrationErrors, `${name}: ${error instanceof Error ? error.message : String(error)}`] })) },
   finish(browserTools: unknown[] = []) { useWebMcpLifecycleStore.setState((state) => ({ browserTools, registrationState: state.registrationErrors.length === 0 && state.registeredToolCount === state.expectedToolCount ? 'ready' : 'error' })) },
   setSelfTest(ok: boolean, detail: string) { useWebMcpLifecycleStore.setState({ selfTest: { ok, detail } }) }
+  ,executed(tool: string, success: boolean, beforeVersion: number, afterVersion: number, detail: string) { useWebMcpLifecycleStore.setState((state) => ({ executions: [{ tool, success, beforeVersion, afterVersion, detail }, ...state.executions].slice(0, 10) })) }
 }
 
 type ToolContext = { executeTool?: (...args: unknown[]) => Promise<unknown> }

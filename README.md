@@ -34,6 +34,12 @@ There is no internal chatbot or synthetic “agent connected” claim. The Explo
 
 ## WebMCP
 
+### Runtime actions vs development work
+
+“Change this palette” is a runtime request: use `update_palette` and the open application updates immediately and persists in browser storage. It does not need a commit, rebuild, or Vercel deployment. “Change how the palette editor works” is a development request and does require a code change, build, and deployment.
+
+The selected direction is canonical for palette and typography. `src/core/actions/designActions.ts` synchronizes the System projection inside the same logical mutation, so Direction, Refine, System, critiques, and WebMCP reads cannot report divergent color or type values.
+
 At the top level, `src/webmcp/registerTools.ts` feature-detects `document.modelContext.registerTool`. Each registration has native JSON Schema, Zod validation, structured results, error isolation, and uses the same Zustand actions as the UI. The lifecycle store records detection, expected/registered counts, tool names, errors, and `getTools()` results. The implementation prevents duplicate registrations in the current WebMCP API; it does not invent an unregister operation where the host API does not provide one.
 
 Open any workspace route with `?webmcpDebug=1` to inspect API availability, registration state, expected and successful counts, registered names, errors, `getTools()` output, and a guarded self-test. If the host exposes `executeTool`, the test invokes `get_project_context`; otherwise the panel explicitly reports that host limitation rather than pretending the tool ran.
