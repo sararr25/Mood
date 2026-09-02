@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware'
 import type { AgentSuggestion, ColorToken, CreatedBy, DesignDecision, DesignSystem, Direction, Phase, Project, Reference, SuggestionMutation, TypographyToken } from '../core/types'
 import { wanderwellDemo } from '../data/wanderwellDemo'
 import { activeDirection, synchronizeDesign, updatePalette as applyPalette, updatePaletteToken, updateSelectedDirection, updateTypography as applyTypography } from '../core/actions/designActions'
+import { getCritiques } from '../core/analysis'
 
 type DirectionPatch = Partial<Pick<Direction, 'title' | 'statement' | 'descriptors' | 'referenceIds' | 'palette' | 'typography' | 'approved'>>
 type DecisionPatch = Partial<Pick<DesignDecision, 'category' | 'statement' | 'supportingReferenceIds' | 'status'>>
@@ -29,7 +30,7 @@ type ProjectStore = {
   createDirection: (direction: Direction) => void
   updateDirection: (id: string, patch: DirectionPatch) => void
   selectDirection: (id: string) => void
-  approveDirection: (id: string) => void
+  approveDirection: (id: string) => { success: boolean; reason?: string }
   updateStatement: (statement: string) => void
   createDecision: (decision: DesignDecision) => void
   updateDecision: (id: string, patch: DecisionPatch) => { success: boolean; reason?: string }
@@ -108,7 +109,14 @@ export const useProjectStore = create<ProjectStore>()(persist((set, get) => {
     createDirection: (direction) => mutateActive('Created a direction', (project) => ({ ...project, directions: [...project.directions, direction], selectedDirectionId: direction.id }), direction.createdBy),
     updateDirection: (directionId, patch) => mutateActive('Updated a direction', (project) => updateSelectedDirection(project, directionId, patch)),
     selectDirection: (directionId) => mutateActive('Selected a direction', (project) => deriveSystem({ ...project, selectedDirectionId: project.directions.some((direction) => direction.id === directionId) ? directionId : project.selectedDirectionId })),
-    approveDirection: (directionId) => mutateActive('Approved a direction', (project) => deriveSystem({ ...project, directions: project.directions.map((direction) => ({ ...direction, approved: direction.id === directionId })), selectedDirectionId: directionId })),
+    approveDirection: (directionId) => {
+      const current = getActiveProject(get())
+      if (!current) return { success: false, reason: 'No active project.' }
+      const candidate = { ...current, selectedDirectionId: current.directions.some((direction) => direction.id === directionId) ? directionId : current.selectedDirectionId }
+      if (getCritiques(candidate).some((critique) => critique.severity === 'critical' && !candidate.ignoredCritiqueIds.includes(critique.id))) return { success: false, reason: 'Resolve critical accessibility or evidence critiques before locking this direction.' }
+      mutateActive('Approved a direction', (project) => deriveSystem({ ...project, directions: project.directions.map((direction) => ({ ...direction, approved: direction.id === directionId })), selectedDirectionId: directionId }))
+      return { success: true }
+    },
     updateStatement: (statement) => mutateActive('Edited direction statement', (project) => deriveSystem(withSelected(project, (direction) => ({ ...direction, statement })))),
     createDecision: (decision) => mutateActive('Created a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.some((item) => item.id === decision.id) ? project.designDecisions : [...project.designDecisions, decision] }), decision.createdBy),
     updateDecision: (decisionId, patch) => { const current = getActiveProject(get())?.designDecisions.find((decision) => decision.id === decisionId); if (current?.locked) return { success: false, reason: 'Locked human decisions cannot be overwritten.' }; mutateActive('Updated a design decision', (project) => ({ ...project, designDecisions: project.designDecisions.map((decision) => decision.id === decisionId ? { ...decision, ...patch } : decision) })); return { success: true } },
