@@ -1,89 +1,98 @@
 # MOOD
 
-MOOD is a human-led creative workspace for the OpenAI WebMCP Challenge. It turns a brief and visual evidence into a clear direction, tested decisions, and a traceable design system. An agent can read the active project through WebMCP and propose bounded changes with evidence; the designer explicitly applies or dismisses every meaningful suggestion.
+MOOD is a human-led creative workspace for the OpenAI WebMCP Challenge. It helps a designer turn a brief and visual evidence into a clear direction, tested decisions, and a traceable design system.
 
-## Run and build
+Through WebMCP, an agent can inspect the active project, its references, and design decisions; it can then suggest or perform bounded actions in the open workspace. The designer keeps approval and final creative control: suggestions wait for review, and locked human decisions cannot be overwritten.
+
+## Run locally
+
+Prerequisites: Node.js `20.19+` or `22.12+`.
 
 ```bash
-npm install
+git clone https://github.com/sararr25/Mood.git
+cd Mood
+npm ci
 npm run dev
-npm run build
 ```
 
-The Vite production bundle is written to `dist`.
+Vite prints the local URL (normally `http://localhost:5173`). To make a production bundle, run:
+
+```bash
+npm run build
+npm run preview
+```
+
+The build is written to `dist`. No API key, environment file, account, database, or external service is required to run the app; project state stays in the browser's local storage.
 
 ## Project model and routes
 
-Browser storage persists a `projects: Project[]` collection plus `activeProjectId`. Each project owns its references, direction candidates, selected direction, decisions, design system, suggestions, activity, version and local reset state.
+Browser storage persists a `projects: Project[]` collection plus `activeProjectId`. Each project owns its references, directions, decisions, design system, suggestions, activity, version, and reset state.
 
-- `/` — project home: create, open, duplicate, or delete a project.
+- `/` — create, open, duplicate, or delete a project.
 - `/project/:projectId/explore`
 - `/project/:projectId/direction`
 - `/project/:projectId/refine`
 - `/project/:projectId/system`
 
-`wanderwell` is the protected demo project. A new project starts empty and is valid in every stage. It can be reset without affecting the other projects.
+`wanderwell` is a protected demo project. New projects start empty and can be reset without affecting other work.
 
 ## Human-agent collaboration
 
-There is no internal chatbot or synthetic connection claim. The global Agent Suggestions panel shows proposals created through WebMCP, their evidence, exact change scope, review status, and undo path. `● Agent-ready` appears only after every WebMCP registration succeeds.
+The Agent Suggestions panel records each proposal's evidence, scope, review status, and undo path. `create_suggestion` requires a rationale, evidence IDs, and a plain-language summary; it never applies its own proposal. `apply_suggestion` and `reject_suggestion` are explicit review actions.
 
-- UI changes and critique evaluation are local deterministic state changes.
-- Guided-example suggestions are curated seed content and are labelled by provenance.
-- `create_suggestion` requires a rationale and plain-language change summary, validates evidence IDs, and never applies its own suggestion.
-- `inspect_suggestion` and `get_agent_suggestions` let an agent or judge verify the review queue without mutating the project.
-- Only `apply_suggestion` performs the proposed mutation; `reject_suggestion` leaves creative data untouched.
+MOOD's deterministic UI actions and WebMCP actions use the same Zustand store. Runtime WebMCP actions update the open application directly and persist in browser storage; they do not require a code edit, commit, rebuild, or redeploy. Development work, such as changing the palette editor itself, is separate and does require those steps.
+
+The selected direction is canonical for palette and typography. `src/core/actions/designActions.ts` synchronizes the System projection in the same logical mutation so Direction, Refine, System, critiques, and WebMCP reads stay aligned.
 
 ## WebMCP
 
-### Runtime actions vs development work
+`src/webmcp/registerTools.ts` feature-detects `document.modelContext.registerTool`. Each tool has native JSON Schema, Zod input validation, structured results, isolated errors, and the same underlying actions as the UI. `src/webmcp/lifecycle.ts` records API detection, registration counts and names, errors, and `getTools()` results.
 
-“Change this palette” is a runtime request: use `update_palette` and the open application updates immediately and persists in browser storage. It does not need a commit, rebuild, or Vercel deployment. “Change how the palette editor works” is a development request and does require a code change, build, and deployment.
+Open a workspace route with `?webmcpDebug=1` to inspect availability, registrations, errors, `getTools()` output, and a guarded self-test. When the host exposes `executeTool`, the test invokes `get_project_context`; otherwise the panel reports that limitation clearly.
 
-The selected direction is canonical for palette and typography. `src/core/actions/designActions.ts` synchronizes the System projection inside the same logical mutation, so Direction, Refine, System, critiques, and WebMCP reads cannot report divergent color or type values.
-
-At the top level, `src/webmcp/registerTools.ts` feature-detects `document.modelContext.registerTool`. Each registration has native JSON Schema, Zod validation, structured results, error isolation, and uses the same Zustand actions as the UI. The lifecycle store records detection, expected/registered counts, tool names, errors, and `getTools()` results. The implementation prevents duplicate registrations in the current WebMCP API; it does not invent an unregister operation where the host API does not provide one.
-
-Open any workspace route with `?webmcpDebug=1` to inspect API availability, registration state, expected and successful counts, registered names, errors, `getTools()` output, and a guarded self-test. If the host exposes `executeTool`, the test invokes `get_project_context`; otherwise the panel explicitly reports that host limitation rather than pretending the tool ran.
-
-Registered tools:
+The current registry contains 43 tools:
 
 ```text
+update_palette, get_palette_context, get_current_phase, navigate_to_phase,
 get_project_context, get_references, get_selected_references, get_directions,
 get_selected_direction, get_design_decisions, get_design_system,
 get_agent_suggestions, inspect_suggestion, get_critiques,
 search_reference_library, add_reference, keep_reference, reject_reference,
-restore_reference, add_reference_note, create_direction, update_direction,
-select_direction, create_design_decision, update_design_decision,
-lock_design_decision, reject_design_decision, evaluate_palette,
-evaluate_direction, create_suggestion, apply_suggestion, reject_suggestion,
-set_design_system, update_color_token, update_typography_token,
-update_design_principle, list_projects, create_project, open_project,
-get_active_project
+restore_reference, add_reference_note, remove_reference, reorder_references,
+create_direction, update_direction, select_direction, create_design_decision,
+update_design_decision, lock_design_decision, reject_design_decision,
+evaluate_palette, evaluate_direction, create_suggestion, apply_suggestion,
+reject_suggestion, set_design_system, update_color_token,
+update_typography_token, update_design_principle, list_projects,
+update_project, create_project, open_project, get_active_project
 ```
+
+Notable runtime tools include `update_palette` and `get_palette_context` for synchronized live palette work, `get_current_phase` and `navigate_to_phase` for the workflow, and `get_project_context` for the active brief, references, decisions, and state. Reference and project operations are similarly bounded to the currently open browser workspace.
 
 ## Verification checklist
 
-1. Open `/` and create a project with a name, brief, and optional avoid list.
-2. Open that project and verify the empty Explore, Direction, Refine, and System states.
-3. Use the project controls to duplicate or delete a non-demo project.
-4. In the ChatGPT desktop built-in browser, open `?webmcpDebug=1`, inspect the registry, then call `get_project_context`, `get_references`, `add_reference`, `create_direction`, `create_design_decision`, `evaluate_palette`, and `get_design_decisions`.
-5. Select and lock a decision manually in the UI, then rerun palette evaluation to confirm the human lock remains intact.
+1. Create a project with a name, brief, and optional avoid list.
+2. Confirm its empty Explore, Direction, Refine, and System states.
+3. Duplicate or delete a non-demo project.
+4. In a WebMCP-capable browser, open `?webmcpDebug=1`, inspect the 43-tool registry, and call `get_project_context`, `get_references`, `add_reference`, `create_direction`, `create_design_decision`, and `evaluate_palette`.
+5. Select and lock a decision in the UI, then rerun palette evaluation to confirm the lock remains intact.
 
 ## Architecture
 
 - `src/core/types.ts` — shared project, reference, direction, decision, token, and suggestion types.
-- `src/data/wanderwellDemo.ts` — the resettable Wanderwell demo seed.
-- `src/data/referenceLibrary.ts` — a provider-shaped local structured reference library.
+- `src/data/wanderwellDemo.ts` — resettable Wanderwell seed.
+- `src/data/referenceLibrary.ts` — local structured reference library.
 - `src/store/projectStore.ts` — persisted multi-project Zustand state and shared actions.
 - `src/core/analysis.ts` — deterministic contrast, palette-distance, hierarchy, and evidence critiques.
 - `src/app/App.tsx` — responsive UI, route handling, human controls, and debug panel.
-- `src/webmcp/lifecycle.ts` and `src/webmcp/registerTools.ts` — lifecycle diagnostics and top-level Site-tool registration.
+- `src/webmcp/lifecycle.ts` and `src/webmcp/registerTools.ts` — diagnostics and WebMCP registration.
 
-## Limits
+## Deployment
 
-The MVP has no authentication, database, payments, internal model, or server-side storage. Project state and data-URL image imports remain in the browser’s local storage. Remote demo images are used only as supplied visual content; the structured reference library can be replaced by an approved provider.
+The project deploys as a Vite application. Configure the build command as `npm run build` and the output directory as `dist`; `vercel.json` rewrites direct project routes to the Vite entry point.
 
-## Vercel
+Live app: https://mood-rho-liart.vercel.app
 
-Use Vite, `npm run build`, and `dist`. `vercel.json` rewrites direct client-side project routes to the Vite entry point.
+## License
+
+[MIT](LICENSE)
