@@ -8,12 +8,13 @@ export const getCritiques = (project: Project): Critique[] => {
   if (!direction) return []
   const critiques: Critique[] = []
   const surface = direction.palette[3] ?? '#FFFFFF'
-  const ink = direction.palette[4] ?? direction.palette[0]
+  const ink = direction.palette[0] ?? direction.palette[4]
   const ratio = contrastRatio(ink, surface)
+  const accessibleInk = contrastRatio('#251913', surface) >= contrastRatio('#FFFFFF', surface) ? '#251913' : '#FFFFFF'
   critiques.push({
     id: 'contrast-primary-surface', type: 'contrast', severity: ratio >= 4.5 ? 'info' : 'critical', title: ratio >= 4.5 ? 'Primary ink clears readable contrast' : 'Primary ink needs more contrast',
     detail: `${ratio.toFixed(2)}:1 against the selected surface. ${ratio >= 4.5 ? 'This clears WCAG AA for normal text.' : 'Use the deep forest token for text on this surface.'}`,
-    affectedIds: ['primary', 'surface'], action: ratio >= 4.5 ? undefined : { type: 'update_palette', palette: [...direction.palette.slice(0, 4), '#251913'] }
+    affectedIds: ['primary', 'surface'], action: ratio >= 4.5 ? undefined : { type: 'update_palette', palette: [accessibleInk, ...direction.palette.slice(1)] }
   })
   direction.palette.forEach((color, index) => direction.palette.slice(index + 1).forEach((other, nextIndex) => {
     const distance = paletteDistance(color, other)
