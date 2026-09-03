@@ -1,6 +1,6 @@
 # MOOD
 
-MOOD is a local-first creative workspace for the OpenAI WebMCP Challenge. It takes a project from references to a direction, refinement, and a small design system while preserving the supplied Stitch layout as the visual baseline.
+MOOD is a human-led creative workspace for the OpenAI WebMCP Challenge. It turns a brief and visual evidence into a clear direction, tested decisions, and a traceable design system. An agent can read the active project through WebMCP and propose bounded changes with evidence; the designer explicitly applies or dismisses every meaningful suggestion.
 
 ## Run and build
 
@@ -24,13 +24,15 @@ Browser storage persists a `projects: Project[]` collection plus `activeProjectI
 
 `wanderwell` is the protected demo project. A new project starts empty and is valid in every stage. It can be reset without affecting the other projects.
 
-## What is real vs demo
+## Human-agent collaboration
 
-There is no internal chatbot or synthetic “agent connected” claim. The Explore panel identifies demo suggestions, local deterministic critiques, and suggestions created through Site tools separately. Its visible ready status is only `● Site tools ready`, and is rendered only after every WebMCP registration succeeds.
+There is no internal chatbot or synthetic connection claim. The global Agent Suggestions panel shows proposals created through WebMCP, their evidence, exact change scope, review status, and undo path. `● Agent-ready` appears only after every WebMCP registration succeeds.
 
 - UI changes and critique evaluation are local deterministic state changes.
-- Demo suggestions are explicit seed/demo content.
-- A `create_suggestion` Site-tool invocation is recorded as a Site-tool suggestion, and it still requires `apply_suggestion` before it mutates project data.
+- Guided-example suggestions are curated seed content and are labelled by provenance.
+- `create_suggestion` requires a rationale and plain-language change summary, validates evidence IDs, and never applies its own suggestion.
+- `inspect_suggestion` and `get_agent_suggestions` let an agent or judge verify the review queue without mutating the project.
+- Only `apply_suggestion` performs the proposed mutation; `reject_suggestion` leaves creative data untouched.
 
 ## WebMCP
 
@@ -48,7 +50,8 @@ Registered tools:
 
 ```text
 get_project_context, get_references, get_selected_references, get_directions,
-get_selected_direction, get_design_decisions, get_design_system, get_critiques,
+get_selected_direction, get_design_decisions, get_design_system,
+get_agent_suggestions, inspect_suggestion, get_critiques,
 search_reference_library, add_reference, keep_reference, reject_reference,
 restore_reference, add_reference_note, create_direction, update_direction,
 select_direction, create_design_decision, update_design_decision,

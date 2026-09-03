@@ -44,7 +44,7 @@ const entries: Array<[string, string, string, string, string[], string[]]> = [
 ]
 
 const photoIds = [
-  'photo-1500534623283-312aade485b7', 'photo-1464822759023-fed622ff2c3b', 'photo-1500534314209-a25ddb2bd429', 'photo-1482192596544-9eb780fc7f66', 'photo-1470770841072-f978cf4d019e', 'photo-1441974231531-c6227db76b6e', 'photo-1506744038136-46273834b3fb', 'photo-1511497584788-876760111969', 'photo-1448375240586-882707db888b', 'photo-1473448912268-2022ce9509d8', 'photo-1490730141103-6cac27aaab94', 'photo-1470770841072-f978cf4d019e'
+  'photo-1500534623283-312aade485b7', 'photo-1464822759023-fed622ff2c3b', 'photo-1500534314209-a25ddb2bd429', 'photo-1482192596544-9eb780fc7f66', 'photo-1470770841072-f978cf4d019e', 'photo-1441974231531-c6227db76b6e', 'photo-1506744038136-46273834b3fb', 'photo-1511497584788-876760111969', 'photo-1448375240586-882707db888b', 'photo-1473448912268-2022ce9509d8', 'photo-1490730141103-6cac27aaab94', 'photo-1519681393784-d120267933ba', 'photo-1464278533981-50106e6176b1', 'photo-1478131143081-80f7f84ca84d', 'photo-1526481280695-3c687fd643ed', 'photo-1500530855697-b586d89ba3ee', 'photo-1486911278844-a81c5267e227', 'photo-1472396961693-142e6e269027', 'photo-1513836279014-a89f7a76ae86', 'photo-1523712999610-f77fbcfc3843', 'photo-1501785888041-af3ef285b470', 'photo-1443632864897-14973fa006cf', 'photo-1517825738774-7de9363ef735', 'photo-1528127269322-539801943592', 'photo-1454496522488-7a8e488e8606', 'photo-1439853949127-fa647821eba0', 'photo-1483347756197-71ef80e95f73', 'photo-1528181304800-259b08848526', 'photo-1530789253388-582c481c54b0', 'photo-1488646953014-85cb44e25828', 'photo-1527631746610-bca00a040d60', 'photo-1493246507139-91e8fad9978e', 'photo-1504198453319-5ce911bafcde', 'photo-1441716844725-09cedc13a4e7', 'photo-1472214103451-9374bd1c798e', 'photo-1497250681960-ef046c08a56e'
 ]
 
 export const wanderwellReferenceLibrary: ReferenceLibraryItem[] = entries.map(([id, title, source, group, tags, extractedColors], index) => ({
@@ -64,11 +64,14 @@ export interface ReferenceProvider {
 
 export const localReferenceProvider: ReferenceProvider = {
   search(query, tags = [], limit = 12) {
+    const aliases: Record<string, string[]> = { outdoors: ['trail', 'landscape', 'field', 'camp'], tactile: ['texture', 'material', 'paper', 'canvas', 'stone'], editorial: ['type', 'print', 'book', 'poster'], human: ['human', 'handmade', 'craft', 'process'], calm: ['quiet', 'mist', 'soft', 'light'], bold: ['contrast', 'colour', 'orange', 'blue'] }
     const terms = query.toLowerCase().split(/\s+/).filter(Boolean)
-    return wanderwellReferenceLibrary.filter((item) => {
+    const ranked = wanderwellReferenceLibrary.map((item) => {
       const haystack = [item.title, item.source, item.group, ...item.tags].join(' ').toLowerCase()
-      return terms.every((term) => haystack.includes(term)) && tags.every((tag) => item.tags.includes(tag))
-    }).slice(0, Math.max(1, Math.min(limit, 40)))
+      const score = terms.reduce((total, term) => total + (haystack.includes(term) ? 3 : (aliases[term] ?? []).some((alias) => haystack.includes(alias)) ? 1 : 0), 0)
+      return { item, score }
+    }).filter(({ item, score }) => (!terms.length || score > 0) && tags.every((tag) => item.tags.includes(tag))).sort((a, b) => b.score - a.score)
+    return ranked.slice(0, Math.max(1, Math.min(limit, 40))).map(({ item }) => item)
   }
 }
 

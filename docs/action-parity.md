@@ -13,6 +13,7 @@ MOOD has one runtime project state in Zustand. The selected direction is the can
 | Update typography | Refine / System | `update_typography_token` | `updateTypography()` | Direction and System typography update atomically |
 | Create / lock decision | Refine | `create_design_decision`, `lock_design_decision` | decision store actions | Decision evidence and lock persisted |
 | Apply critique | Refine critique | `apply_suggestion` | `applySuggestion()` | Suggestion mutation uses canonical action |
+| Inspect / apply / dismiss suggestion | Agent Suggestions panel | `inspect_suggestion`, `apply_suggestion`, `reject_suggestion` | suggestion store actions | Evidence and scope visible before mutation; history retained |
 | Navigate phase | Top navigation | `navigate_to_phase` | `setPhase()` | Current phase updates immediately |
 
 Runtime creative requests use site tools and modify the already-open application. They never require a build, commit, or deployment. Development requests that change application code do.
